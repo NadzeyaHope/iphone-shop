@@ -1,11 +1,23 @@
-import {ThemeSwitcher} from "@/widgets/ThemeSwitcher";
+import Search from "@/widgets/Search";
+import Carusel from "@/widgets/carusel/Carusel";
+import CardOfProduct from "@/widgets/CardOfProduct";
+import Sidebar from "@/widgets/Sidebar";
 
 
 export default function Home() {
+
+
     return (
         <main>
-        <ThemeSwitcher/>
-            <button >dsfs</button>
+            <Sidebar/>
+            <div className={'mt-5'}/>
+            <div className={'w-full md:w-full lg:w-[70%] m-auto'}>
+                <Search/>
+                <div className={'mt-5 md:mt-10'}/>
+                <Carusel/>
+            </div>
+            <div className={'mt-5 md:mt-10'}/>
+            <CardOfProduct/>
         </main>
     );
 }
