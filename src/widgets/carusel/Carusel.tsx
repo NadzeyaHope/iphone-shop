@@ -1,7 +1,7 @@
 import React from 'react';
-import EmblaCarousel from "@/widgets/carusel/EmblaCarousel";
 import {EmblaOptionsType} from "embla-carousel";
-import CategoriesItem from "@/widgets/CategoriesItem";
+import CategoriesItem from "../CategoriesItem";
+import EmblaCarousel from "./EmblaCarousel";
 
 export const OPTIONS: EmblaOptionsType = {dragFree: true}
 

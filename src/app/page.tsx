@@ -1,12 +1,10 @@
-import Search from "@/widgets/Search";
-import Carusel from "@/widgets/carusel/Carusel";
-import CardOfProduct from "@/widgets/CardOfProduct";
-import Sidebar from "@/widgets/Sidebar";
+import Sidebar from "../widgets/Sidebar";
+import Search from "../widgets/Search";
+import Carusel from "../widgets/carusel/Carusel";
+import CardOfProduct from "../widgets/CardOfProduct";
 
 
 export default function Home() {
-
-
     return (
         <main>
             <Sidebar/>

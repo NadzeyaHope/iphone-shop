@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import CardOfShopping from "@/shared/CardOfShopping";
+import CardOfShopping from "../shared/CardOfShopping";
 
 const CardOfProduct = () => {
     const list = [

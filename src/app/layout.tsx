@@ -3,8 +3,8 @@ import {Inter} from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/system";
 import {ThemeProvider as NextThemesProvider} from "next-themes";
-import Dropdown from "@/shared/Dropdown";
-import {Container} from "@/shared/Container";
+import {Container} from "../shared/Container";
+import Dropdown from "../shared/Dropdown";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -27,7 +27,7 @@ export default function RootLayout({
             <NextThemesProvider attribute="class" enableSystem>
                 <Container>
                     {children}
-                    <div className={'flex px-4 w-full items-center sm:hidden fixed z-10 bottom-0'}>
+                    <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
                         <Dropdown/>
                     </div>
                     <div className={'h-32'} ></div>

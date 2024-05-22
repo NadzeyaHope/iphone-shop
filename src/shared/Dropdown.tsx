@@ -7,6 +7,7 @@ import ShopIcon from "../../public/dropdown/ShopIcon";
 import UserIcon from "../../public/dropdown/UserIcon";
 import {usePathname} from "next/navigation";
 import {motion} from "framer-motion";
+import HeartIcon from "../../public/dropdown/HeartIcon";
 
 
 const navigateItem = [
@@ -16,7 +17,7 @@ const navigateItem = [
         active: false,
     },
     {
-        icon: <LoveIcon/>,
+        icon: <HeartIcon/>,
         url: '/featured-products',
         active: true,
     },
@@ -40,6 +41,7 @@ const Dropdown = () => {
 
     return (
         <Navbar
+            className={'w-full'}
             classNames={{
                 item: [
                     "flex",
@@ -47,9 +49,9 @@ const Dropdown = () => {
                     "h-full",
                     "justify-between",
                 ],
-                base: ['bg-content1 rounded-full'],
+                base: ['bg-content1 m-auto rounded-full'],
                 wrapper: ['p-2'],
-                content:['w-full']
+                content : ['gap-1'],
             }}
         >
             <NavbarContent>
