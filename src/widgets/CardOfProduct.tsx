@@ -3,6 +3,7 @@ import React from "react";
 import CardOfShopping from "../shared/CardOfShopping";
 
 const CardOfProduct = () => {
+
     const list = [
         {
             id: '1',
@@ -19,13 +20,14 @@ const CardOfProduct = () => {
             mark: 'new',
         },
         {
-            id: '2',
+            id: '3',
             title: "iPhone 15 Pro",
             img: "/products/macbookpng2.svg",
             price: "$1200",
             mark: 'new',
         },
     ];
+
 
     return (
         <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
@@ -34,7 +36,7 @@ const CardOfProduct = () => {
                     price={item.price}
                     title={item.title}
                     img={item.img}
-                    key={item.id}
+                    id={item.id}
                     mark={item.mark}
                 />
             ))}

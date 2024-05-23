@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 import { MongoClient } from 'mongodb';
 
-const url = 'mongodb://localhost:27017?serverSelectionTimeoutMS=10000';
+const url = 'mongodb://localhost:27017';
 const dbName = 'iphone-shop';
 const client = new MongoClient(url);
 
