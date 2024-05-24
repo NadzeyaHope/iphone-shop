@@ -7,7 +7,6 @@ import CardOfProduct from "../widgets/CardOfProduct";
 export default function Home() {
     return (
         <main>
-            <Sidebar/>
             <div className={'mt-5'}/>
             <div className={'w-full md:w-full lg:w-[70%] m-auto'}>
                 <Search/>

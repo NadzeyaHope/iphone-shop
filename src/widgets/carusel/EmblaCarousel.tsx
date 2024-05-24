@@ -8,21 +8,24 @@ import './styles/carousel.css';
 
 type PropType = {
     options?: EmblaOptionsType;
-    children: ReactNode
+    children: ReactNode;
+    className? : string;
 }
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
-    const {options, children} = props
+    const {options, className, children} = props
     const [emblaRef, emblaApi] = useEmblaCarousel(options)
 
     return (
-        <section className="embla">
-            <div className="embla__viewport" ref={emblaRef}>
-                <div className="embla__container">
-                    {children}
+        <div className={className} >
+            <section className="embla">
+                <div className="embla__viewport" ref={emblaRef}>
+                    <div className="embla__container">
+                        {children}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     )
 }
 

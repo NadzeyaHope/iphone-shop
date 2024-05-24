@@ -33,6 +33,7 @@ const CardOfProduct = () => {
         <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
             {list.map((item, index) => (
                 <CardOfShopping
+                    key={item.id}
                     price={item.price}
                     title={item.title}
                     img={item.img}

@@ -6,8 +6,10 @@ import ProductData from "../../../shared/ProductData";
 
 const Page = () => {
     const params = useParams<{ productId: string }>();
+
     return (
         <div>
+            <div className={'mt-5'} />
             <ProductData params={params?.productId}/>
         </div>
     );

@@ -5,6 +5,7 @@ import {NextUIProvider} from "@nextui-org/system";
 import {ThemeProvider as NextThemesProvider} from "next-themes";
 import {Container} from "../shared/Container";
 import Dropdown from "../shared/Dropdown";
+import Sidebar from "../widgets/Sidebar";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -26,6 +27,7 @@ export default function RootLayout({
         <NextUIProvider>
             <NextThemesProvider attribute="class" enableSystem>
                 <Container>
+                    <Sidebar/>
                     {children}
                     <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
                         <Dropdown/>
