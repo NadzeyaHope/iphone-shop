@@ -43,19 +43,23 @@ const Sidebar = () => {
             </NavbarContent>
 
             <NavbarContent className={' flex md:hidden'} justify={'center'}>
-                <NavbarBrand>
-                    <Logo/>
+                <NavbarBrand >
+                    <Link href={'/'} >
+                        <Logo/>
+                    </Link>
                 </NavbarBrand>
             </NavbarContent>
             <NavbarContent className={'hidden md:flex'} justify={'start'}>
-                <NavbarBrand>
-                    <Logo/>
+                <NavbarBrand >
+                    <Link href={'/'} >
+                        <Logo/>
+                    </Link>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-6">
                 <NavbarItem>
-                    <Link color="foreground" href="#">
+                    <Link color="foreground" href="/">
                         Home
                     </Link>
                 </NavbarItem>

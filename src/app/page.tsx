@@ -1,4 +1,3 @@
-import Sidebar from "../widgets/Sidebar";
 import Search from "../widgets/Search";
 import Carusel from "../widgets/carusel/Carusel";
 import CardOfProduct from "../widgets/CardOfProduct";

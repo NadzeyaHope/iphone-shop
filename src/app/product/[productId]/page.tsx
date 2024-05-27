@@ -9,7 +9,7 @@ const Page = () => {
 
     return (
         <div>
-            <div className={'mt-5'} />
+            <div className={'mt-10'} />
             <ProductData params={params?.productId}/>
         </div>
     );
