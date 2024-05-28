@@ -32,7 +32,7 @@ export default function RootLayout({
                     <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
                         <Dropdown/>
                     </div>
-                    <div className={'h-32'} ></div>
+                    <div className={'h-20 md:h-32'} ></div>
                 </Container>
             </NextThemesProvider>
         </NextUIProvider>

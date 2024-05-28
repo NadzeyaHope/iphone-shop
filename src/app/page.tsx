@@ -3,7 +3,11 @@ import Carusel from "../widgets/carusel/Carusel";
 import CardOfProduct from "../widgets/CardOfProduct";
 
 
-export default function Home() {
+export default function Page() {
+
+
+
+
     return (
         <main>
             <div className={'mt-5'}/>

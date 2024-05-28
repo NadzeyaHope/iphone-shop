@@ -8,7 +8,7 @@ interface Props {
     id: string;
     title: string;
     img: string;
-    price: string;
+    price: number;
     mark?: string;
 }
 
@@ -26,6 +26,14 @@ const CardOfShopping = (props: Props) => {
     const onChangeAccount = () => {
         router.push(`/product/${selectedKey}`);
     };
+
+    const onLoveIconClick = (event : any) => () => {
+        event.stopPropagation()
+        console.log("Love icon clicked");
+        // Дополнительная логика для LoveIcon
+    };
+
+
 
     return (
         <Card
@@ -47,12 +55,12 @@ const CardOfShopping = (props: Props) => {
                 className="z-0 w-full pt-10 pb-5 h-full scale-125 -translate-y-6 object-cover"
                 src={img}
             />
-            <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
-                <div>
-                    <h4 className="text-content1 text-medium">{title}</h4>
-                    <p className={'text-tiny'}>{price}</p>
+            <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-center">
+                <div className={'relative'} >
+                    <h4 className="text-content1 text-lg">{title}</h4>
+                    <p className={'text-tiny'}>$ {price}, 00</p>
                 </div>
-                <LoveIcon/>
+                <div onClick={()=>{onLoveIconClick(event)}} className={'absolute ml-56'}><LoveIcon/></div>
             </CardFooter>
         </Card>
 

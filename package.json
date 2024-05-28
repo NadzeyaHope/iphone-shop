@@ -13,6 +13,7 @@
     "@nextui-org/react": "^2.3.6",
     "assert": "^2.1.0",
     "asserts": "^4.0.2",
+    "axios": "^1.7.2",
     "embla-carousel": "^8.0.4",
     "embla-carousel-react": "^8.0.4",
     "mongodb": "^6.6.2",
