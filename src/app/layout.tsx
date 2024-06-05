@@ -4,8 +4,10 @@ import "./globals.css";
 import {NextUIProvider} from "@nextui-org/system";
 import {ThemeProvider as NextThemesProvider} from "next-themes";
 import {Container} from "../shared/Container";
-import Dropdown from "../shared/Dropdown";
+import Dropdown from "../widgets/Dropdown";
 import Sidebar from "../widgets/Sidebar";
+import Footer from "../widgets/Footer/Footer";
+import FooterPrivicy from "../widgets/Footer/FooterPrivicy";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -34,6 +36,8 @@ export default function RootLayout({
                     </div>
                     <div className={'h-20 md:h-32'} ></div>
                 </Container>
+                <Footer/>
+                <FooterPrivicy/>
             </NextThemesProvider>
         </NextUIProvider>
         </body>

@@ -1,7 +1,7 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'next/navigation';
-import ProductData from "../../../shared/ProductData";
+import ProductData from "../../../widgets/ProductData";
 import {Product} from "../../../widgets/CardOfProduct";
 
 const Page = () => {
@@ -32,6 +32,7 @@ const Page = () => {
             <div className={'mt-10'} />
             {product ? (
                 <ProductData
+                    key={product._id}
                     startStorage={product.variants[0]?.memory}
                     image={product.images[0]}
                     startColor={product.colors[0]?.name}

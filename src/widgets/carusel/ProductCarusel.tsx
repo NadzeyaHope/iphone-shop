@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductImage from "../../shared/product/ProductImage";
+import ProductImage from "../../shared/ProductImage";
 import EmblaCarousel from "./EmblaCarousel";
 import {OPTIONS} from "./Carusel";
 
@@ -13,7 +13,7 @@ const ProductCarusel = (props : Props) => {
         <div className={'h-[300px]'} >
             <EmblaCarousel options={OPTIONS}>
                 {img.map((el, index)=>(
-                    <div className={'h-[300px]'} ><ProductImage img={el}/></div>
+                    <div key={index} className={'h-[300px]'} ><ProductImage img={el}/></div>
                 ))}
             </EmblaCarousel>
         </div>

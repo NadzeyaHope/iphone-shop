@@ -1,0 +1,22 @@
+{
+  "en": {
+    "sidebar": {
+      "menu_home": "Home",
+      "menu_catalog": "Catalog",
+      "menu_contact": "Contact",
+      "menu_about": "About us",
+      "login" : "Login",
+      "Sign_up" : "Sign up"
+    }
+  },
+  "ru": {
+    "sidebar": {
+      "menu_home": "Главная",
+      "menu_catalog": "Каталог",
+      "menu_contact": "Контакты",
+      "menu_about": "О нас",
+      "login" : "Войти",
+      "Sign_up" : "Регистрация"
+    }
+  }
+}

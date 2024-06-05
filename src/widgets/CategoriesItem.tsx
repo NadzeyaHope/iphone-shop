@@ -20,7 +20,7 @@ const CategoriesItem = (props : Props) => {
                        alt={'sdfs'}/>
                 <p className={'text-xs w-[94%] m-auto py-1 text-center text-default rounded-full  bg-content2 '}>{title}</p>
             </div>
-            <div className={'relative z-20 hidden sm:block'}>
+            <div className={'relative z-20 hidden sm:hidden md:block'}>
                 <CircleIcon/>
                 <Image className={'absolute z-10 top-[15%] left-[9%] '} width={'100'} height={'100'} src={image}
                        alt={'sdfs'}/>

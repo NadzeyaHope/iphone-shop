@@ -44,17 +44,20 @@ const CardOfShopping = (props: Props) => {
                 onChangeAccount()
             }}
             isFooterBlurred
-            className="w-[300px] bg-default col-span-12 sm:col-span-5"
+            className="w-[300px] m-auto bg-default"
         >
             <CardHeader className="absolute z-10 top-1 flex-col items-start">
                 <p className="text-tiny text-content1/60 uppercase font-bold">{mark}</p>
             </CardHeader>
-            <Image
-                removeWrapper
-                alt="Card example background"
-                className="z-0 w-full pt-10 pb-5 h-full scale-125 -translate-y-6 object-cover"
-                src={img}
-            />
+            <div className={'h-[250px] m-auto'} >
+                <Image
+                    removeWrapper
+                    alt="Card example background"
+                    className="z-0 m-auto pt-10 pb-5 scale-125 -translate-y-6 object-cover"
+                    src={img}
+                    width={250}
+                />
+            </div>
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-center">
                 <div className={'relative'} >
                     <h4 className="text-content1 text-lg">{title}</h4>

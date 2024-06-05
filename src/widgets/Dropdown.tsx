@@ -8,6 +8,7 @@ import UserIcon from "../../public/dropdown/UserIcon";
 import {usePathname} from "next/navigation";
 import {motion} from "framer-motion";
 import HeartIcon from "../../public/dropdown/HeartIcon";
+import useLang from "../hooks/useLang";
 
 
 const navigateItem = [
@@ -37,7 +38,6 @@ const navigateItem = [
 
 const Dropdown = () => {
     const path = usePathname()
-
 
     return (
         <Navbar

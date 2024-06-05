@@ -1,6 +1,6 @@
 'use client';
 import React, {useEffect, useState} from "react";
-import CardOfShopping from "../shared/CardOfShopping";
+import CardOfShopping from "./CardOfShopping";
 
 export interface ColorsProduct {
     name : string;
@@ -44,33 +44,8 @@ const CardOfProduct = () => {
     }, []);
 
 
-    const list = [
-        {
-            id: '1',
-            title: "iPhone 15 Pro",
-            img: "/products/macbookpng2.svg",
-            price: "$1200",
-            mark: 'new',
-        },
-        {
-            id: '2',
-            title: "iPhone 15 Pro",
-            img: "/products/macbookpng2.svg",
-            price: "$1200",
-            mark: 'new',
-        },
-        {
-            id: '3',
-            title: "iPhone 15 Pro",
-            img: "/products/macbookpng2.svg",
-            price: "$1200",
-            mark: 'new',
-        },
-    ];
-
-
     return (
-        <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+        <div className="grid justify-center gap-y-4 md:gap-y-14 grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
             {products.map((el)=>(
                 <CardOfShopping
                     key={el._id}

@@ -1,119 +1,76 @@
 'use client';
 import React from "react";
-import {
-    Button,
-    Link,
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    NavbarMenu,
-    NavbarMenuItem,
-    NavbarMenuToggle
-} from "@nextui-org/react";
+import {Button, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import Logo from "../../public/navbar/Logo";
-import BuyIconBlack from "../../public/smallIcons/BuyIconBlack";
-import LoveIcon from "../../public/dropdown/LoveIcon";
+import useLang from "../hooks/useLang";
+import {setLang} from "../context/Lang";
+import {AllowedLangs} from "../constants/lang";
 
 const Sidebar = () => {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const {lang, translations} = useLang();
 
-    const menuItems = [
-        "Profile",
-        "Dashboard",
-        "Activity",
-        "Analytics",
-        "System",
-        "Deployments",
-        "My Settings",
-        "Team Settings",
-        "Help & Feedback",
-        "Log Out",
-    ];
+    const handleSwitchLang = (lang : string) => {
+        setLang(lang as AllowedLangs)
+        localStorage.setItem('lang', JSON.stringify(lang))
+    }
+
+    const handleSwitchToRu = () => handleSwitchLang('ru')
+    const handleSwitchToEn = () => handleSwitchLang('en')
 
     return (
-        <Navbar
-            isBordered
-            isMenuOpen={isMenuOpen}
-            onMenuOpenChange={setIsMenuOpen}
-            className={'w-full'}
-        >
-            <NavbarContent className="sm:hidden" justify="start">
-                <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"}/>
-            </NavbarContent>
-
-            <NavbarContent className={' flex md:hidden'} justify={'center'}>
-                <NavbarBrand >
-                    <Link href={'/'} >
+        <Navbar>
+            <NavbarBrand>
+                <p className="font-bold text-inherit">
+                    <Link href={'/'}>
                         <Logo/>
                     </Link>
-                </NavbarBrand>
-            </NavbarContent>
-            <NavbarContent className={'hidden md:flex'} justify={'start'}>
-                <NavbarBrand >
-                    <Link href={'/'} >
-                        <Logo/>
-                    </Link>
-                </NavbarBrand>
-            </NavbarContent>
-
-            <NavbarContent className="hidden sm:flex gap-6">
+                </p>
+            </NavbarBrand>
+            <NavbarContent className="hidden sm:flex gap-6" justify="center">
                 <NavbarItem>
-                    <Link color="foreground" href="/">
-                        Home
+                    <Link color="foreground" href="#">
+                        {translations[lang].sidebar.menu_home}
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive>
                     <Link href="#" aria-current="page">
-                        Promotions
+                        {translations[lang].sidebar.menu_catalog}
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
                     <Link color="foreground" href="#">
-                        About us
+                        {translations[lang].sidebar.menu_contact}
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
                     <Link color="foreground" href="#">
-                        Shop <BuyIconBlack/>
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Favorite
-                        <LoveIcon/>
+                        {translations[lang].sidebar.menu_about}
                     </Link>
                 </NavbarItem>
             </NavbarContent>
-            <NavbarContent justify={'end'}>
+            <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">
-                    <Link href="#">Login</Link>
+                    <Link href="#">
+                        {translations[lang].sidebar.login}
+                    </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="warning" href="#" variant="flat">
-                        Sign Up
+                    <Button as={Link} color="primary" href="#" variant="flat">
+                        {translations[lang].sidebar.Sign_up}
                     </Button>
                 </NavbarItem>
+                <NavbarItem className={'border-1 rounded-xl px-2 py-1.5 border-primary'} >
+                    <button
+                        onClick={handleSwitchToRu}
+                        style={lang === 'ru' ? {color : '#6ee7b7'} : {color : '#d1d5db'}}>RU</button>
+                    <button
+                        onClick={handleSwitchToEn}
+                        className={'ml-2'}
+                        style={lang === 'en' ? {color : '#6ee7b7'} : {color : '#d1d5db'}}>EN</button>
+                </NavbarItem>
             </NavbarContent>
-            <NavbarMenu>
-                {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
-                        <Link
-                            color={
-                                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                            }
-                            className="w-full"
-                            href="#"
-                            size="lg"
-                        >
-                            {item}
-                        </Link>
-                    </NavbarMenuItem>
-                ))}
-            </NavbarMenu>
         </Navbar>
     );
 }
-
 
 export default Sidebar;

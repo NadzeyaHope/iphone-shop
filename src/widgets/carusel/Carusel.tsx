@@ -2,10 +2,12 @@ import React from 'react';
 import {EmblaOptionsType} from "embla-carousel";
 import CategoriesItem from "../CategoriesItem";
 import EmblaCarousel from "./EmblaCarousel";
+import useLang from "../../hooks/useLang";
 
 export const OPTIONS: EmblaOptionsType = {dragFree: true}
 
 const Carusel = () => {
+    
     return (
         <EmblaCarousel options={OPTIONS}>
             <CategoriesItem title={'Air Pods'} image={'/caruselImage/iconairpod.png'}/>
