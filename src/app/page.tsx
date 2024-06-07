@@ -1,6 +1,7 @@
 import Search from "../shared/Search";
 import Carusel from "../widgets/carusel/Carusel";
 import CardOfProduct from "../widgets/CardOfProduct";
+import React from "react";
 
 
 export default function Page() {
@@ -9,9 +10,10 @@ export default function Page() {
     return (
         <main>
             <div className={'mt-5'}/>
-            <div className={'w-full md:w-full lg:w-[70%] m-auto'}>
+            <div className={'w-full md:w-full lg:w-[600px] m-auto'}>
                 <Search/>
-                <div className={'mt-5 md:mt-20'}/>
+            </div>
+            <div className={'mt-5 flex justify-center w-full md:mt-20'}>
                 <Carusel/>
             </div>
             <div className={'mt-10 md:mt-24'}/>

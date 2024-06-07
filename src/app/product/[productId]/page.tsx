@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from 'next/navigation';
 import ProductData from "../../../widgets/ProductData";
 import {Product} from "../../../widgets/CardOfProduct";
+import Progress from "../../../shared/Progress";
 
 const Page = () => {
     const params = useParams();
@@ -43,7 +44,7 @@ const Page = () => {
                     params={params?.productId}
                 />
             ) : (
-                <p>Loading...</p>
+                <Progress/>
             )}
         </div>
     );
