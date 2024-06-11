@@ -1,6 +1,5 @@
 import React from 'react';
 import CardAdded from "../../widgets/CardAdded";
-import CardOfShopping from "../../widgets/CardOfShopping";
 
 const item = [
     {
@@ -39,8 +38,9 @@ const Page = () => {
             <div className={'mt-20'} />
             <div
                 className="grid gap-y-4 md:gap-y-14 grid-cols-1 md:grid-cols-2">
-                {item.map((el) => (
+                {item.map((el, index) => (
                     <CardAdded
+                        key={index}
                         color={el.color}
                         variants={el.variants}
                         title={el.title}

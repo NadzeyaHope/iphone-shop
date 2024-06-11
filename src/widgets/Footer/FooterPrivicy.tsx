@@ -7,7 +7,7 @@ const FooterPrivicy = () => {
         <div className={'text-focus mb-20 md:mb-10 text-tiny mt-5'}>
             <Container className={'flex justify-between'} >
                 <div>
-                    2023 PAO "Ростелеком" Все права защищены
+                    2023 PAO Ростелеком  Все права защищены
                     <hr/>
                     (18+)
                 </div>

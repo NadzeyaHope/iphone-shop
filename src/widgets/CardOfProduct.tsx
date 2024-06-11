@@ -16,7 +16,7 @@ export interface VariantsProduct {
 export type Product = {
     _id: string;
     product_name: string;
-    images: string[];
+    images: string;
     mark: string;
     colors: ColorsProduct[];
     variants: VariantsProduct[];
@@ -60,9 +60,9 @@ const CardOfProduct = () => {
                 <CardOfShopping
                     key={el._id}
                     id={el._id}
-                    img={el.images[0]}
+                    img={el.images}
                     title={el.product_name}
-                    price={el.variants[0].price}
+                    price={1321}
                     mark={el.mark}
                 />
             ))}

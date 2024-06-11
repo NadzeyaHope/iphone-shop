@@ -10,10 +10,8 @@ import {
     ModalFooter,
     ModalHeader
 } from "@nextui-org/react";
-import MailIcon from "../../public/authIcons/MailIcon";
-import LockIcon from "../../public/authIcons/LockIcon";
-import EyesIcon from "../../public/authIcons/eyesIcon";
-import GoogleIcon from "../../public/authIcons/GoogleIcon";
+import MailIcon from "../../../public/authIcons/MailIcon";
+import LockIcon from "../../../public/authIcons/LockIcon";
 
 interface Props {
     onOpen: (e: any) => void;
@@ -21,7 +19,7 @@ interface Props {
     onOpenChange : (isOpen : boolean)=>void;
 }
 
-const ModalFormSignUp = (props: Props) => {
+const ModalFormLogin = (props: Props) => {
     const {onOpen, isOpen, onOpenChange} = props;
 
     return (
@@ -36,14 +34,8 @@ const ModalFormSignUp = (props: Props) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Sign up</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
                             <ModalBody>
-                                <Input
-                                    autoFocus
-                                    label="Name"
-                                    placeholder="Enter your name"
-                                    variant="bordered"
-                                />
                                 <Input
                                     autoFocus
                                     endContent={
@@ -55,18 +47,9 @@ const ModalFormSignUp = (props: Props) => {
                                 />
                                 <Input
                                     endContent={
-                                        <EyesIcon/>
+                                        <LockIcon/>
                                     }
                                     label="Password"
-                                    placeholder="Enter your password"
-                                    type="password"
-                                    variant="bordered"
-                                />
-                                <Input
-                                    endContent={
-                                        <EyesIcon/>
-                                    }
-                                    label="Сonfirm your password"
                                     placeholder="Enter your password"
                                     type="password"
                                     variant="bordered"
@@ -80,16 +63,18 @@ const ModalFormSignUp = (props: Props) => {
                                     >
                                         Remember me
                                     </Checkbox>
+                                    <Link color="primary" href="#" size="sm">
+                                        Forgot password?
+                                    </Link>
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button className={'mr-[144px] py-1 rounded-xl border-1 border-content1'} ><GoogleIcon/></Button>
-                                    <Button color="danger" variant="flat" onPress={onClose}>
-                                        Close
-                                    </Button>
-                                    <Button color="primary" onPress={onClose}>
-                                        Create
-                                    </Button>
+                                <Button color="danger" variant="flat" onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button color="primary" onPress={onClose}>
+                                    Sign in
+                                </Button>
                             </ModalFooter>
                         </>
                     )}
@@ -100,4 +85,4 @@ const ModalFormSignUp = (props: Props) => {
 }
 
 
-export default ModalFormSignUp;
+export default ModalFormLogin;

@@ -1,16 +1,42 @@
 'use client';
 import React from "react";
-import {Button, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Link,
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    NavbarMenu, NavbarMenuItem, NavbarMenuToggle,
+    useDisclosure
+} from "@nextui-org/react";
 import Logo from "../../public/navbar/Logo";
 import useLang from "../hooks/useLang";
 import {setLang} from "../context/Lang";
 import {AllowedLangs} from "../constants/lang";
-import ModalFormLogin from "../shared/ModalFormLogin";
-import ModalFormSignUp from "../shared/ModalFormSignUp";
+import ModalFormLogin from "./auth/ModalFormLogin";
+import ModalFormSignUp from "./auth/ModalFormSignUp";
+
+
+const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+];
+
+
 
 const Sidebar = () => {
     const {lang, translations} = useLang();
     const {isOpen : isOpenLogin, onOpen : onOpenLogin, onOpenChange : onOpenChangeLogin} = useDisclosure();
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const {isOpen : isOpenSignUp, onOpen : onOpenSignUp, onOpenChange : onOpenChangeSignUp} = useDisclosure();
 
     const handleSwitchLang = (lang : string) => {
@@ -34,13 +60,16 @@ const Sidebar = () => {
                 onOpenChange={onOpenChangeLogin}
                 />
             <Navbar>
-                <NavbarBrand>
+                <NavbarBrand className={'hidden sm:flex'} >
                     <p className="font-bold text-inherit">
                         <Link href={'/'}>
                             <Logo/>
                         </Link>
                     </p>
                 </NavbarBrand>
+                <NavbarContent className="sm:hidden" justify="start">
+                    <NavbarMenuToggle />
+                </NavbarContent>
                 <NavbarContent className="hidden sm:flex gap-6" justify="center">
                     <NavbarItem>
                         <Link color="foreground" href="#">
@@ -84,6 +113,22 @@ const Sidebar = () => {
                             style={lang === 'en' ? {color : '#6ee7b7'} : {color : '#d1d5db'}}>EN</button>
                     </NavbarItem>
                 </NavbarContent>
+                <NavbarMenu>
+                    {menuItems.map((item, index) => (
+                        <NavbarMenuItem key={`${item}-${index}`}>
+                            <Link
+                                color={
+                                    index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
+                                }
+                                className="w-full"
+                                href="#"
+                                size="lg"
+                            >
+                                {item}
+                            </Link>
+                        </NavbarMenuItem>
+                    ))}
+                </NavbarMenu>
             </Navbar>
         </>
     );

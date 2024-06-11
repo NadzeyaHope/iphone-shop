@@ -40,8 +40,9 @@ const Page = () => {
             <div className={'mt-10'} />
             <div
                 className="grid justify-center gap-y-6 grid-cols-1 ">
-                {item.map((el) => (
+                {item.map((el, index) => (
                     <CardFeatured
+                        key={index}
                         color={el.color}
                         variants={el.variants}
                         title={el.title}

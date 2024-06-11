@@ -9,6 +9,7 @@ import Sidebar from "../widgets/Sidebar";
 import Footer from "../widgets/Footer/Footer";
 import FooterPrivicy from "../widgets/Footer/FooterPrivicy";
 
+
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
-
+    
 
     return (
         <html lang="en">
@@ -34,7 +35,7 @@ export default function RootLayout({
                     <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
                         <Dropdown/>
                     </div>
-                    <div className={'h-20 md:h-32'} ></div>
+                    <div className={'h-20 md:h-32'}></div>
                 </Container>
                 <Footer/>
                 <FooterPrivicy/>
