@@ -16,6 +16,7 @@ import {setLang} from "../context/Lang";
 import {AllowedLangs} from "../constants/lang";
 import ModalFormLogin from "./auth/ModalFormLogin";
 import ModalFormSignUp from "./auth/ModalFormSignUp";
+import ModalSecons from "./auth/ModalSecons";
 
 
 const menuItems = [

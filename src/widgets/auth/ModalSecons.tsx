@@ -75,6 +75,9 @@ const ModalFormSignUp: React.FC<Props> = ({ onOpen, isOpen, onOpenChange }) => {
             setErrorMessage({...errorMessage, confirmPassword: 'Please input confirmPassword'})
             return;
         }
+        if(!checkBox){
+            return;
+        }
         try {
             const response = await fetch('http://localhost:3000/api/users', {
                 method: 'POST',
@@ -92,7 +95,6 @@ const ModalFormSignUp: React.FC<Props> = ({ onOpen, isOpen, onOpenChange }) => {
             console.log('Form successfully submitted:', result);
         } catch (error) {
             console.error('There was a problem with your fetch operation:', error);
-            setErrorMessage({...errorMessage, email : 'This email already taken'});
             setLoading(true);
         }
         setLoading(false)
@@ -143,6 +145,7 @@ const ModalFormSignUp: React.FC<Props> = ({ onOpen, isOpen, onOpenChange }) => {
                                     />
                                     <div className="flex py-2 px-1 justify-between">
                                         <Checkbox
+                                            isInvalid={!checkBox}
                                             isSelected={checkBox}
                                             onChange={() => setCheckBox(!checkBox)}
                                             classNames={{ label: 'text-small', wrapper: ['border-1 border-content1'] }}
@@ -150,13 +153,13 @@ const ModalFormSignUp: React.FC<Props> = ({ onOpen, isOpen, onOpenChange }) => {
                                             Remember me
                                         </Checkbox>
                                     </div>
-                                    <ButtonGoogleSignup />
                                 </ModalBody>
                                 <ModalFooter>
+                                    <ButtonGoogleSignup />
                                     <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
-                                    <Button type="submit" onPress={onSubmit} color="primary">
+                                    <Button type="submit" onPress={(event)=>{onSubmit()}} color="primary">
                                         Create
                                     </Button>
                                 </ModalFooter>
