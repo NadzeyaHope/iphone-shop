@@ -155,7 +155,6 @@ const ModalFormSignUp: React.FC<Props> = ({ onOpen, isOpen, onOpenChange }) => {
                                     </div>
                                 </ModalBody>
                                 <ModalFooter>
-                                    <ButtonGoogleSignup />
                                     <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>

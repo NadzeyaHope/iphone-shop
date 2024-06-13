@@ -1,7 +1,7 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {MongoClient} from 'mongodb';
 
-const url = 'mongodb://localhost:27017';
+const url = process.env.MONGODB_URL!;
 const dbName = 'iphone-shop';
 const client = new MongoClient(url);
 

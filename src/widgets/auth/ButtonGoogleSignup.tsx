@@ -1,10 +1,11 @@
 import React from 'react';
 import GoogleIcon from "../../../public/authIcons/GoogleIcon";
 import {Button} from "@nextui-org/react";
+import {signIn} from "next-auth/react";
 
 const ButtonGoogleSignup = () => {
     const loginWithGoogle = () => {
-
+        signIn("google")
     }
 
     return (
