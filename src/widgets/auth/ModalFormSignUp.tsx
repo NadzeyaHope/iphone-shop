@@ -63,8 +63,6 @@ const ModalFormSignUp: React.FC<Props> = ({onOpen, isOpen, onOpenChange}) => {
     };
 
     const onSubmit = async (e: any) => {
-        e.preventDefault();
-
         //
         // const signInResponse = await signIn("credentials", {
         //     email : data.email,

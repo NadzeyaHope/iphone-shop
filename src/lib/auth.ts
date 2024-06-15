@@ -11,6 +11,7 @@ interface User {
     name?: string;
     email?: string;
     image? : string;
+    role : string
 }
 
 // Конфигурация NextAuth
@@ -19,6 +20,29 @@ const authConfig: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_KEY_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
+            profile: async (profile) => {
+                const client = await clientPromise;
+                const db = client.db();
+                let user = await db.collection('users').findOne({ email: profile.email });
+                if(!user){
+                    const newUser = {
+                        googleId: profile.id,
+                        name: profile.name,
+                        email: profile.email,
+                        image: profile.picture,
+                        role: 'user',
+                    };
+                    const result = await db.collection('users').insertOne(newUser);
+                    user = await db.collection('users').findOne({ _id: result.insertedId });
+                }
+                return {
+                    id: user?._id.toString(),
+                    name: user?.name,
+                    email: user?.email,
+                    image: user?.image,
+                    role: user?.role,
+                } as User
+            }
         }),
         CredentialsProvider({
             name: "Credentials",
@@ -38,7 +62,8 @@ const authConfig: NextAuthOptions = {
                         id: user._id.toString(),
                         name: user.name,
                         email: user.email,
-                        image: user.image
+                        image: user.image,
+                        role : 'user',
                     };
                     console.log(userWithoutPassword)
                     return userWithoutPassword;
