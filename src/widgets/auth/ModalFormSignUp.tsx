@@ -8,6 +8,7 @@ import {z} from 'zod';
 import SimpleInput from "../../shared/SimpleInput";
 import PasswordInput from "../../shared/PasswordInput";
 import {useRouter} from "next/navigation";
+import ButtonGoogleSignup from "./ButtonGoogleSignup";
 
 
 interface Props {
@@ -170,6 +171,7 @@ const ModalFormSignUp: React.FC<Props> = ({onOpen, isOpen, onOpenChange}) => {
                                         </Checkbox>
                                     </div>
                                     <p>{errorMessage.other}</p>
+                                    <ButtonGoogleSignup/>
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="flat" onPress={onClose}>

@@ -16,8 +16,9 @@ import Logo from "../../public/navbar/Logo";
 import useLang from "../hooks/useLang";
 import {setLang} from "../context/Lang";
 import {AllowedLangs} from "../constants/lang";
-import ModalFormLogin from "./auth/ModalFormLogin";
 import ModalFormSignUp from "./auth/ModalFormSignUp";
+import {useSession} from "next-auth/react";
+import ModalFormLogin from "./auth/ModalFormLogin";
 
 
 const menuItems = [
@@ -34,12 +35,12 @@ const menuItems = [
 ];
 
 
-const Sidebar = ({session} : {session : any}) => {
+const Sidebar = () => {
     const {lang, translations} = useLang();
     const {isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin} = useDisclosure();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const {isOpen: isOpenSignUp, onOpen: onOpenSignUp, onOpenChange: onOpenChangeSignUp} = useDisclosure();
-
+    const {data} = useSession();
 
     const handleSwitchLang = (lang: string) => {
         setLang(lang as AllowedLangs)
@@ -56,11 +57,7 @@ const Sidebar = ({session} : {session : any}) => {
                 isOpen={isOpenSignUp}
                 onOpenChange={onOpenChangeSignUp}
             />
-            <ModalFormLogin
-                onOpen={onOpenLogin}
-                isOpen={isOpenLogin}
-                onOpenChange={onOpenChangeLogin}
-            />
+            <ModalFormLogin onOpen={onOpenLogin} isOpen={isOpenLogin} onOpenChange={onOpenChangeLogin}/>
             <Navbar>
                 <NavbarBrand className={'hidden sm:flex'}>
                     <p className="font-bold text-inherit">
@@ -95,7 +92,7 @@ const Sidebar = ({session} : {session : any}) => {
                     </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
-                    {!session ?
+                    {!data ?
                         <>
                             <NavbarItem className="hidden lg:flex">
                                 <Button onPress={onOpenLogin} className={'text-primary text-medium'}>
@@ -109,7 +106,7 @@ const Sidebar = ({session} : {session : any}) => {
                             </NavbarItem>
                         </>
                         :
-                        <Button className={'hidden lg:flex'} color={"primary"} variant={'flat'} >Log out</Button>}
+                        <Button className={'hidden lg:flex'} color={"primary"} variant={'flat'}>Log out</Button>}
                     <NavbarItem className={'border-1 rounded-xl px-2 py-1.5 border-primary'}>
                         <button
                             onClick={handleSwitchToRu}
@@ -123,9 +120,9 @@ const Sidebar = ({session} : {session : any}) => {
                     </NavbarItem>
                 </NavbarContent>
                 <NavbarMenu>
-                        <NavbarMenuItem key={'profile'}>
-                            <Link color={'danger'} className="w-full" href="#" size="lg">Log out</Link>
-                        </NavbarMenuItem>
+                    <NavbarMenuItem key={'profile'}>
+                        <Link color={'danger'} className="w-full" href="#" size="lg">Log out</Link>
+                    </NavbarMenuItem>
                 </NavbarMenu>
             </Navbar>
         </>

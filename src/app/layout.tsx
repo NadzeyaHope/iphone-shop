@@ -10,6 +10,7 @@ import FooterPrivicy from "../widgets/Footer/FooterPrivicy";
 import {ReactNode} from "react";
 import {NextAuthProvider} from "./providers";
 import GetSession from "../widgets/GetSession";
+import Sidebar from "../widgets/Sidebar";
 
 
 const inter = Inter({subsets: ["latin"]});
@@ -31,7 +32,7 @@ const RootLayout = ({children}: RootLayoutProps) => {
             <NextAuthProvider>
                 <NextThemesProvider attribute="class" enableSystem>
                     <Container>
-                            <GetSession/>
+                            <Sidebar />
                             {children}
                             <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
                                 <Dropdown/>

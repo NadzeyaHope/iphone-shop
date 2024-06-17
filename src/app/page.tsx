@@ -5,7 +5,6 @@ import React from "react";
 import {getServerSession} from "next-auth";
 import authConfig from "../lib/auth";
 import {redirect} from "next/navigation";
-import {GoogleSignInButton} from "../widgets/AuthButtons";
 
 
 export default async function Page() {
@@ -22,7 +21,6 @@ export default async function Page() {
                 <Search/>
                 <div className={'mt-5 md:mt-20'}/>
                 <Carusel/>
-                <GoogleSignInButton/>
             </div>
             <div className={'mt-10 md:mt-24'}/>
             <div className={'w-full px-0 lg:px-5 md:px-5 m-auto'}>
