@@ -4,15 +4,11 @@ import CardOfProduct from "../widgets/CardOfProduct";
 import React from "react";
 import {getServerSession} from "next-auth";
 import authConfig from "../lib/auth";
-import {redirect} from "next/navigation";
 
 
 export default async function Page() {
     const session = await getServerSession(authConfig);
 
-    console.log("Session: ", session);
-
-    if (session) return redirect("/timeline");
 
     return (
         <main>

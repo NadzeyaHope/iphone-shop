@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import authConfig from "../../lib/auth";
 import {redirect} from "next/navigation";
 import {Image} from "@nextui-org/react";
+import PersonalHeader from "../../widgets/personal/PersonalHeader";
+import PersonalBody from "../../widgets/personal/PersonalBody";
 
 const wait = (ms: number) => new Promise((rs) => setTimeout(rs, ms));
 
@@ -14,14 +16,14 @@ export default async function Page() {
 
     const session = await getServerSession(authConfig);
 
-
     await wait(1000);
 
     return (
-        <>
-            <Image src={String(session?.user?.image)}  width={100} height={100} />
-            <h3>This is your timeline: {session?.user?.email}</h3>
-            <h3>This is your timeline: {session?.user?.name}</h3>
-        </>
+        <div>
+            <PersonalHeader/>
+            <div className={'mt-20'}>
+                <PersonalBody/>
+            </div>
+        </div>
     );
 }

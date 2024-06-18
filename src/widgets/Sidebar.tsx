@@ -19,7 +19,7 @@ import {AllowedLangs} from "../constants/lang";
 import ModalFormSignUp from "./auth/ModalFormSignUp";
 import {useSession} from "next-auth/react";
 import ModalFormLogin from "./auth/ModalFormLogin";
-
+import {signOut} from "next-auth/react";
 
 const menuItems = [
     "Profile",
@@ -40,7 +40,6 @@ const Sidebar = () => {
     const {isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin} = useDisclosure();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const {isOpen: isOpenSignUp, onOpen: onOpenSignUp, onOpenChange: onOpenChangeSignUp} = useDisclosure();
-    const {data} = useSession();
 
     const handleSwitchLang = (lang: string) => {
         setLang(lang as AllowedLangs)
@@ -49,6 +48,9 @@ const Sidebar = () => {
 
     const handleSwitchToRu = () => handleSwitchLang('ru')
     const handleSwitchToEn = () => handleSwitchLang('en')
+
+    const {data} = useSession()
+    console.log(data?.user)
 
     return (
         <>
@@ -71,7 +73,7 @@ const Sidebar = () => {
                 </NavbarContent>
                 <NavbarContent className="hidden sm:flex gap-6" justify="center">
                     <NavbarItem>
-                        <Link color="foreground" href="#">
+                        <Link color="foreground" href="/">
                             {translations[lang].sidebar.menu_home}
                         </Link>
                     </NavbarItem>
@@ -90,6 +92,11 @@ const Sidebar = () => {
                             {translations[lang].sidebar.menu_about}
                         </Link>
                     </NavbarItem>
+                    <NavbarItem>
+                        <Link color="foreground" href="/profile">
+                            Personal
+                        </Link>
+                    </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
                     {!data ?
@@ -106,7 +113,7 @@ const Sidebar = () => {
                             </NavbarItem>
                         </>
                         :
-                        <Button className={'hidden lg:flex'} color={"primary"} variant={'flat'}>Log out</Button>}
+                        <Button onClick={async ()=>{await signOut()}} className={'hidden lg:flex'} color={"primary"} variant={'flat'}>Log out</Button>}
                     <NavbarItem className={'border-1 rounded-xl px-2 py-1.5 border-primary'}>
                         <button
                             onClick={handleSwitchToRu}

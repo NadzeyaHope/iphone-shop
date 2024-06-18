@@ -30,7 +30,7 @@ const RootLayout = ({children}: RootLayoutProps) => {
         <body className={inter.className}>
         <NextUIProvider>
             <NextAuthProvider>
-                <NextThemesProvider attribute="class" enableSystem>
+                <NextThemesProvider attribute="class" defaultTheme={'light'}>
                     <Container>
                             <Sidebar />
                             {children}
