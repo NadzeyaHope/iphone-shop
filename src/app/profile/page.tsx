@@ -1,14 +1,13 @@
-import { getServerSession } from "next-auth";
+import {getServerSession} from "next-auth";
 import authConfig from "../../lib/auth";
 import {redirect} from "next/navigation";
-import {Image} from "@nextui-org/react";
 import PersonalHeader from "../../widgets/personal/PersonalHeader";
 import PersonalBody from "../../widgets/personal/PersonalBody";
 
 const wait = (ms: number) => new Promise((rs) => setTimeout(rs, ms));
 
 export default async function Page() {
-    const loginIsRequiredServer =  async () => {
+    const loginIsRequiredServer = async () => {
         const session = await getServerSession(authConfig);
         if (!session) return redirect("/");
     }

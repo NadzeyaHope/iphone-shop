@@ -9,7 +9,6 @@ import Footer from "../widgets/Footer/Footer";
 import FooterPrivicy from "../widgets/Footer/FooterPrivicy";
 import {ReactNode} from "react";
 import {NextAuthProvider} from "./providers";
-import GetSession from "../widgets/GetSession";
 import Sidebar from "../widgets/Sidebar";
 
 
@@ -32,12 +31,12 @@ const RootLayout = ({children}: RootLayoutProps) => {
             <NextAuthProvider>
                 <NextThemesProvider attribute="class" defaultTheme={'light'}>
                     <Container>
-                            <Sidebar />
-                            {children}
-                            <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
-                                <Dropdown/>
-                            </div>
-                            <div className={'h-20 md:h-32'}></div>
+                        <Sidebar/>
+                        {children}
+                        <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
+                            <Dropdown/>
+                        </div>
+                        <div className={'h-20 md:h-32'}></div>
                     </Container>
                     <Footer/>
                     <FooterPrivicy/>
