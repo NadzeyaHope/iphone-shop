@@ -45,7 +45,7 @@ const CardOfProduct = () => {
                     id={el._id}
                     img={el.colors[0].imageUrl}
                     title={el.name}
-                    price={1321}
+                    price={el.price}
                     mark={'new'}
                 />
             ))}

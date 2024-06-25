@@ -47,7 +47,6 @@ const Page: React.FC = () => {
                     startStorage={product.storageOptions?.[0]?.storage || ''}
                     image={product.colors?.[0]?.imageUrl || ''}
                     startColor={product.colors?.[0]?.colorName || ''}
-                    startPrice={product.storageOptions?.[0]?.price || ''}
                     variants={product.storageOptions}
                     colors={product.colors}
                     title={product.name}

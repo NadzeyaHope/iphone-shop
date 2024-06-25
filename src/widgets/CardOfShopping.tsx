@@ -10,7 +10,7 @@ interface Props {
     id: string;
     title: string;
     img: string;
-    price: number;
+    price: string;
     mark?: string;
 }
 
