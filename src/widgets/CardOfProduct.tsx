@@ -2,26 +2,8 @@
 import React, {useEffect, useState} from "react";
 import CardOfShopping from "./CardOfShopping";
 import Progress from "../shared/Progress";
+import {Product} from "../models/Products";
 
-export interface ColorsProduct {
-    name: string;
-    hex: string
-}
-
-export interface VariantsProduct {
-    memory: string;
-    price: number
-}
-
-export type Product = {
-    _id: string;
-    product_name: string;
-    images: string;
-    mark: string;
-    colors: ColorsProduct[];
-    variants: VariantsProduct[];
-
-}
 
 const CardOfProduct = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -61,10 +43,10 @@ const CardOfProduct = () => {
                 <CardOfShopping
                     key={el._id}
                     id={el._id}
-                    img={el.images}
-                    title={el.product_name}
+                    img={el.colors[0].imageUrl}
+                    title={el.name}
                     price={1321}
-                    mark={el.mark}
+                    mark={'new'}
                 />
             ))}
         </div>

@@ -27,7 +27,7 @@ const CardOfShopping = (props: Props) => {
     };
 
     const onEdit = () => {
-        router.push(`/admin/${selectedKey}`);
+        router.push(`/admin/edit/${selectedKey}`);
     }
 
     const onChangeAccount = () => {

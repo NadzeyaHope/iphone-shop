@@ -1,11 +1,20 @@
-'use client';
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'next/navigation';
+"use client";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import ProductData from "../../../widgets/ProductData";
-import {Product} from "../../../widgets/CardOfProduct";
 import Progress from "../../../shared/Progress";
+import {ColorsProduct, VariantsProduct} from "../../../models/Products";
 
-const Page = () => {
+type Product = {
+    _id: string;
+    name: string;
+    description: string;
+    price : string;
+    colors: ColorsProduct[];
+    storageOptions: VariantsProduct[];
+}
+
+const Page: React.FC = () => {
     const params = useParams();
     const [product, setProduct] = useState<Product | null>(null);
 
@@ -33,14 +42,15 @@ const Page = () => {
             <div className={'mt-10'} />
             {product ? (
                 <ProductData
+                    price={product.price}
                     key={product._id}
-                    startStorage={product.variants[0]?.memory}
-                    image={product.images[0]}
-                    startColor={product.colors[0]?.name}
-                    startPrice={product.variants[0]?.price}
-                    variants={product.variants}
+                    startStorage={product.storageOptions?.[0]?.storage || ''}
+                    image={product.colors?.[0]?.imageUrl || ''}
+                    startColor={product.colors?.[0]?.colorName || ''}
+                    startPrice={product.storageOptions?.[0]?.price || ''}
+                    variants={product.storageOptions}
                     colors={product.colors}
-                    title={product.product_name}
+                    title={product.name}
                     params={params?.productId}
                 />
             ) : (

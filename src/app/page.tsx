@@ -22,6 +22,7 @@ export default async function Page() {
             <div className={'w-full px-0 lg:px-5 md:px-5 m-auto'}>
                 <CardOfProduct/>
             </div>
+
         </main>
     );
 }

@@ -97,6 +97,11 @@ const Sidebar = () => {
                             Personal
                         </Link>
                     </NavbarItem>
+                    <NavbarItem>
+                        <Link color="foreground" href="/admin/create-product">
+                            Admin
+                        </Link>
+                    </NavbarItem>
                 </NavbarContent>
                 <NavbarContent justify="end">
                     {!data ?
