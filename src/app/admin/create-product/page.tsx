@@ -1,9 +1,8 @@
 'use client';
 import React, {useState} from 'react';
-import {onAddProduct} from "../../../lib/admin-fetch";
-import {Button, Input, Select, SelectItem, Spacer, Textarea} from "@nextui-org/react";
-import Image from "next/image";
-import {Product} from "../../../models/Products";
+import {Button, Image, Input, Select, SelectItem, Spacer, Textarea} from "@nextui-org/react";
+import {AppleWatch, IPadProduct, IPhoneProduct, ProductCreate} from "../../../models/Products";
+import {handleSubmitCreateProduct} from "../../../lib/other";
 import InputCreateOption from "../../../widgets/admin/InputCreateOption";
 
 const categoryItem = [
@@ -21,36 +20,42 @@ const categoryMark = [
     ''
 ]
 
+const defaultIPhoneProduct: IPhoneProduct = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'iPhone',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    storageOptions:[{variant: '', price: ''}],
+    countSIM: [],
+};
+
+const defaultIPadProduct: IPadProduct = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'iPad',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    storageOptions: [],
+    iPadModule: [],
+    countSIM: [],
+};
+
+const defaultAppleWatch: AppleWatch = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'AppleWatch',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    dimensions: [],
+    display: [],
+};
+
+
+
 const Page = () => {
-    const [productData, setProductData] = useState<Product>({
-        name: '',
-        price: '',
-        description: '',
-        category: 'iPhone',
-        colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-        storageOptions: [{storage: '', price: ''}],
-        display: [{size: '', price: ''}],
-        dimensions: [{size: '', price: ''}],
-        iPadModule: [{variant: '', price: ''}],
-        countSIM: [{variant: '', price: ''}],
-        mark: 'новинка',
-    });
+    const [formData, setFormData] = useState(defaultIPhoneProduct);
 
-    const handleAddObject = (objectKey: keyof Product, newObject: Record<any, any>) => {
-        setProductData({
-            ...productData,
-            [objectKey]: [...(productData[objectKey] as any), newObject]
-        });
-    };
-
-    const handleRemoveLastObject = (object: keyof Product) => {
-        if ((productData[object] as any).length > 0) {
-            setProductData({
-                ...productData,
-                [object]: (productData[object] as any).slice(0, -1)
-            });
-        }
-    };
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, colorIndex: number, imageIndex: number) => {
         const file = e.target.files?.[0];
@@ -59,11 +64,11 @@ const Page = () => {
             reader.readAsDataURL(file);
 
             reader.onload = () => {
-                const newColors = [...productData.colors];
+                const newColors = [...formData.colors];
                 const newImageUrl = [...newColors[colorIndex].imageUrl];
                 newImageUrl[imageIndex] = String(reader.result);
                 newColors[colorIndex].imageUrl = newImageUrl;
-                setProductData({...productData, colors: newColors});
+                setFormData({...formData, colors: newColors});
             };
 
             reader.onerror = () => {
@@ -71,151 +76,104 @@ const Page = () => {
             };
         }
     };
-
     const handleAddImage = (colorIndex: number) => {
-        const newColors = [...productData.colors];
+        const newColors = [...formData.colors];
         newColors[colorIndex].imageUrl.push('');
-        setProductData({...productData, colors: newColors});
+        setFormData({...formData, colors: newColors});
     };
     const handleRemoveLastImage = (colorIndex: number) => {
-        const newColors = [...productData.colors];
+        const newColors = [...formData.colors];
         if (newColors[colorIndex].imageUrl.length > 0) {
             newColors[colorIndex].imageUrl.pop();
-            setProductData({...productData, colors: newColors});
+            setFormData({...formData, colors: newColors});
+        }
+    };
+
+    const handleAddObject = (objectKey: keyof ProductCreate, newObject: Record<any, any>) => {
+        setFormData({
+            ...formData,
+            [objectKey]: [...(formData[objectKey] as any), newObject]
+        });
+    };
+
+    const handleRemoveLastObject = (object: keyof ProductCreate) => {
+        if ((formData[object] as any).length > 0) {
+            setFormData({
+                ...formData,
+                [object]: (formData[object] as any).slice(0, -1)
+            });
         }
     };
 
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        let filteredProductData: any = {
-            name: productData.name,
-            price: productData.price,
-            description: productData.description,
-            category: productData.category,
-            colors: productData.colors,
-            mark: productData.mark,
-        };
-
-        if (productData.category === 'iPhone' || productData.category === 'iPad') {
-            filteredProductData.storageOptions = productData.storageOptions;
-        }
-        if (productData.category === 'iPhone') {
-            filteredProductData.countSIM = productData.countSIM;
-        }
-        if (productData.category === 'iPad') {
-            filteredProductData.iPadModule = productData.iPadModule;
-        }
-        if (productData.category === 'AppleWatch') {
-            filteredProductData.display = productData.display;
-            filteredProductData.dimensions = productData.dimensions;
-        }
-
-        try {
-            const request = await onAddProduct(productData, '/api/test');
-            if (request === true) {
-                setProductData({
-                    name: '',
-                    price: '',
-                    description: '',
-                    category: 'iPhone',
-                    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-                    storageOptions: [{storage: '', price: ''}],
-                    display: [{size: '', price: ''}],
-                    dimensions: [{size: '', price: ''}],
-                    iPadModule: [{variant: '', price: ''}],
-                    countSIM: [{variant: '', price: ''}],
-                    mark: 'новинка',
-                });
-            }
-        } catch (e: any) {
-            new Error(e.message);
-        }
-    };
 
     return (
-        <div className="container mx-auto p-10">
+        <div className="container space-y-4 mx-auto p-10">
+            <form
+                onSubmit={(e) => {
+                    handleSubmitCreateProduct(e, formData)
+                }}
+                className="space-y-4"
+            >
             <h1 className="text-2xl font-bold mb-4">Добавить новый продукт</h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <Select
+                label={'Category: '}
+                labelPlacement={'outside-left'}
+                value={formData.category}
+                classNames={{
+                    label: ['m-auto text-gray-400'],
+                    mainWrapper: ['bg-gray-100 rounded-xl'],
+                    popoverContent: ['bg-gray-100 rounded-xl'],
+                }}
+            >
+                <SelectItem onClick={() => {
+                    setFormData(defaultIPhoneProduct)
+                    setFormData({...formData, category : 'iPhone'})
+                }} value={formData.category} key={'iPhone'}>
+                    iPhone
+                </SelectItem>
+                <SelectItem onClick={() => {
+                    setFormData(defaultIPadProduct)
+                }} value={formData.category} key={'iPad'}>
+                    iPad
+                </SelectItem>
+            </Select>
                 <Input
                     fullWidth
                     label="Название продукта"
-                    value={productData.name}
-                    onChange={(e) => setProductData({...productData, name: e.target.value})}
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
                     classNames={{
                         inputWrapper: ['bg-gray-100']
                     }}
                 />
-                <Select
-                    fullWidth
-                    label="Категории"
-                    value={productData.category}
-                    className="text-3xl"
-                    classNames={{
-                        mainWrapper: ['bg-gray-100 rounded-xl'],
-                        popoverContent: ['bg-gray-100 rounded-xl'],
-                    }}
-                    onChange={(e) => setProductData({...productData, category: e.target.value})}
-                    required
-                >
-                    {categoryItem.map((category, index) => (
-                        <SelectItem
-                            onClick={(e) => setProductData({...productData, category: category})}
-                            key={index} value={category}>
-                            {category}
-                        </SelectItem>
-                    ))}
-                </Select>
-                <Select
-                    fullWidth
-                    label="mark"
-                    value={productData.mark}
-                    className="text-3xl"
-                    classNames={{
-                        mainWrapper: ['bg-gray-100 rounded-xl'],
-                        popoverContent: ['bg-gray-100 rounded-xl'],
-                    }}
-                    onChange={(e) => setProductData({...productData, mark: e.target.value})}
-                    required
-                >
-                    {categoryMark.map((category, index) => (
-                        <SelectItem
-                            onClick={(e) => setProductData({...productData, mark: category})}
-                            key={index} value={category}>
-                            {category}
-                        </SelectItem>
-                    ))}
-                </Select>
                 <Textarea
                     classNames={{
                         inputWrapper: ['bg-gray-100']
                     }}
                     fullWidth
                     label="Описание"
-                    value={productData.description}
-                    onChange={(e) => setProductData({...productData, description: e.target.value})}
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
                     required
                 />
-                <h2 className="text-xl font-bold">Цена</h2>
                 <Input
                     fullWidth
                     label="Минимальная цена"
-                    value={productData.price}
-                    onChange={(e) => setProductData({...productData, price: e.target.value})}
+                    value={formData.price}
+                    onChange={(e) => setFormData({...formData, price: e.target.value})}
                     required
                     classNames={{
                         inputWrapper: ['bg-gray-100']
                     }}
                 />
-                <Spacer/>
-                <h2 className="text-xl font-bold">Цвета</h2>
-                {productData.colors.map((color: any, colorIndex: number) => (
+                <hr/>
+                {formData.colors.map((color: any, colorIndex: number) => (
                     <div key={colorIndex} className="space-y-2">
                         <InputCreateOption
-                            productData={productData}
-                            setProductData={setProductData}
+                            productData={formData}
+                            setProductData={setFormData}
                             optionName={'colors'}
                             optionObject={color}
                             optionObjectKey={'colorName'}
@@ -223,25 +181,23 @@ const Page = () => {
                             optionObjectIndex={colorIndex}
                         />
                         <InputCreateOption
-                            productData={productData}
-                            setProductData={setProductData}
+                            productData={formData}
+                            setProductData={setFormData}
                             optionName={'colors'}
                             optionObject={color}
                             optionObjectKey={'colorHex'}
                             label={'Цвет Hex'}
                             optionObjectIndex={colorIndex}
                         />
-                        <Spacer/>
                         <InputCreateOption
-                            productData={productData}
-                            setProductData={setProductData}
+                            productData={formData}
+                            setProductData={setFormData}
                             optionName={'colors'}
                             optionObject={color}
                             optionObjectKey={'price'}
                             label={'Цена (дополнительная цена за цвет)'}
                             optionObjectIndex={colorIndex}
                         />
-                        <Spacer/>
                         {color.imageUrl.map((image: string, imageIndex: number) => (
                             <div key={imageIndex} className="space-y-2">
                                 <Input
@@ -259,118 +215,69 @@ const Page = () => {
                                 {image && typeof image === 'string' ? (
                                     <Image src={image} width={100} height={100} alt="Превью изображения"/>
                                 ) : null}
-                                <Spacer/>
                             </div>
                         ))}
                         <Button size={'md'} className={'mr-4'} color="secondary"
                                 onClick={() => handleAddImage(colorIndex)} type="button">
-                            добавить изображение
+                            добавить изображение (согласно цвету)
                         </Button>
                         <Button size={'md'} color="danger" onClick={() => {
                             handleRemoveLastImage(colorIndex)
                         }} type="button">
                             удалить последнее
                         </Button>
-                        <Spacer/>
                     </div>
                 ))}
-                <Spacer/>
                 <hr/>
                 <Button className={'mr-4'} color="secondary" onClick={()=>{handleAddObject('colors',{colorName: '', colorHex: '', imageUrl: [''], price: ''})}} type="button">
-                    Добавить еще один цвет
+                    Добавить цвет
                 </Button>
                 <Button color="danger" onClick={() => {
                     handleRemoveLastObject('colors')
                 }} type="button">
                     Удалить цвет
                 </Button>
-                <Spacer/>
-                {productData.category === 'iPhone' && (
+                <hr/>
+                {formData.category === 'iPhone' && (
                     <>
                         <h2 className="text-xl font-bold">Память телефона</h2>
-                        {productData.storageOptions?.map((storage, storageIndex) => (
+                        {formData.storageOptions?.map((storage, storageIndex) => (
                             <div key={storageIndex}>
                                 <InputCreateOption
-                                    productData={productData}
-                                    setProductData={setProductData}
-                                    optionName={'storageOptions'}
+                                    productData={formData}
+                                    setProductData={setFormData}
+                                    optionName={('storageOptions' as keyof ProductCreate)}
                                     optionObject={storage}
-                                    optionObjectKey={'storage'}
+                                    optionObjectKey={'variant'}
+                                    label={'Вариант памяти телефона'}
                                     optionObjectIndex={storageIndex}
-                                    label={'Память телефона'}
                                 />
-                                <Spacer y={3}/>
                                 <InputCreateOption
-                                    productData={productData}
-                                    setProductData={setProductData}
-                                    optionName={'storageOptions'}
+                                    productData={formData}
+                                    setProductData={setFormData}
+                                    optionName={('storageOptions' as keyof ProductCreate)}
                                     optionObject={storage}
                                     optionObjectKey={'price'}
+                                    label={'цена (которая прибавиться к сумме согласно памяти)'}
                                     optionObjectIndex={storageIndex}
-                                    label={'Цена прибавляемая к общей'}
                                 />
                             </div>
                         ))}
                         <Spacer/>
                         <hr/>
                         <Button className={'mr-4'} color="secondary" onClick={() => {
-                            handleAddObject('storageOptions', {storage: '', price: ''})
+                            handleAddObject(('storageOptions' as keyof ProductCreate), {storage: '', price: ''})
                         }} type="button">
                             Добавить еще один вариант
                         </Button>
                         <Button color="danger" onClick={() => {
-                            handleRemoveLastObject('storageOptions')
+                            handleRemoveLastObject(('storageOptions' as keyof ProductCreate))
                         }} type="button">
                             Удалить вариант
                         </Button>
                         <Spacer/>
-                        <h2 className="text-xl font-bold">Количество SIM</h2>
-                        {productData.storageOptions?.map((countSIM, countSIMIndex) => (
-                            <div key={countSIMIndex}>
-                                <InputCreateOption
-                                    productData={productData}
-                                    setProductData={setProductData}
-                                    optionName={'countSIM'}
-                                    optionObject={countSIM}
-                                    optionObjectKey={'storage'}
-                                    optionObjectIndex={countSIMIndex}
-                                    label={'Количество SIM'}
-                                />
-                                <Spacer y={3}/>
-                            </div>
-                        ))}
-                        <Spacer/>
-                        <hr/>
-                        <Button className={'mr-4'} color="secondary" onClick={() => {
-                            handleAddObject('storageOptions', {storage: '', price: ''})
-                        }} type="button">
-                            Добавить еще один вариант
-                        </Button>
-                        <Button color="danger" onClick={() => {
-                            handleRemoveLastObject('storageOptions')
-                        }} type="button">
-                            Удалить вариант
-                        </Button>
-                        <Spacer/>
-
                     </>
                 )}
-                {productData.category === 'iPad' && (
-                    <>
-
-                    </>
-                )}
-                {productData.category === 'AppleWatch' && (
-                    <>
-
-                    </>
-                )}
-                {productData.category === 'AirPods' && (
-                    <>
-
-                    </>
-                )}
-                <Spacer/>
                 <Button color="primary" size="lg" type="submit">Создать</Button>
             </form>
         </div>

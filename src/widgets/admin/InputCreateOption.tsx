@@ -1,19 +1,18 @@
 import React from 'react';
-import {Input} from "@nextui-org/react";
-import {Product} from "../../models/Products";
-
+import { Input } from "@nextui-org/react";
+import { ProductCreate } from "../../models/Products";
 
 interface Props {
-    productData: Product;
-    setProductData: any;
-    optionName: keyof Product; // colors
+    productData: ProductCreate;
+    setProductData: (data: any) => void;
+    optionName: keyof ProductCreate; // colors
     optionObject: any; // color
-    optionObjectKey: any; // colorHex
-    optionObjectIndex: any; // colorIndex
+    optionObjectKey: string; // colorHex
+    optionObjectIndex: number; // colorIndex
     label: string;
 }
 
-const InputCreateOption = (props: Props) => {
+const InputCreateOption: React.FC<Props> = (props) => {
     const {
         setProductData,
         productData,
@@ -23,25 +22,27 @@ const InputCreateOption = (props: Props) => {
         optionObjectIndex,
         label,
     } = props;
-//color -
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedOptionObject = { ...optionObject, [optionObjectKey]: e.target.value };
+        const updatedOptionArray = [...(productData[optionName] as any[])];
+        updatedOptionArray[optionObjectIndex] = updatedOptionObject;
+
+        setProductData({ ...productData, [optionName]: updatedOptionArray });
+    };
 
     return (
-        <>
-            <Input
-                classNames={{
-                    inputWrapper: ['bg-gray-100']
-                }}
-                fullWidth
-                label={label}
-                value={optionObject[optionObjectKey]}
-                onChange={(e) => {
-                    const newObject = [...(productData[optionName] as any[])];
-                    newObject[optionObjectIndex][optionObjectKey] = e.target.value;
-                    setProductData({...productData, [optionName]: newObject});
-                }}
-                required
-            />
-        </>
+        <Input
+            classNames={{
+                base: ['mb-3'],
+                inputWrapper: ['bg-gray-100']
+            }}
+            fullWidth
+            label={label}
+            value={optionObject[optionObjectKey]}
+            onChange={handleChange}
+            required
+        />
     );
 };
 

@@ -5,18 +5,18 @@ export interface ProductColor {
     price: string;
 }
 
-export interface ProductOptions {
-    storage : string;
+export interface Storage {
+    variant : string;
     price : string;
 }
 
 export interface Display {
-    size : string;
+    variant : string;
     price : string;
 }
 
 export interface Dimensions {
-    size : string;
+    variant : string;
     price : string;
 }
 
@@ -30,17 +30,31 @@ export interface countSIM {
     price : string;
 }
 
+export interface IPhoneProduct extends Product {
+    storageOptions: Storage[];
+    countSIM: countSIM[];
+}
 
-export type Product = {
+export interface IPadProduct extends Product  {
+    storageOptions: Storage[];
+    iPadModule: IPadModule[];
+    countSIM: countSIM[];
+}
+export interface AppleWatch extends Product  {
+    dimensions : Dimensions[];
+    display : Display[];
+}
+
+
+
+type Product = {
     name: string;
     price: string;
     description: string;
     mark? : string;
     category: string;
     colors: ProductColor[],
-    storageOptions?: ProductOptions[],
-    display? : Display[];
-    dimensions? : Dimensions[];
-    iPadModule? : IPadModule[];
-    countSIM? : countSIM[];
 }
+
+export type ProductCreate = IPadProduct | IPhoneProduct | AppleWatch
+
