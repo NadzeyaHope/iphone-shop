@@ -10,7 +10,7 @@ import FooterPrivicy from "../widgets/Footer/FooterPrivicy";
 import {ReactNode} from "react";
 import {NextAuthProvider} from "./providers";
 import Sidebar from "../widgets/Sidebar";
-
+import './../styles/slick.css';
 
 const inter = Inter({subsets: ["latin"]});
 

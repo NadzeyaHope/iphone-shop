@@ -1,18 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import ProductData from "../../../widgets/ProductData";
 import Progress from "../../../shared/Progress";
-import {ColorsProduct, VariantsProduct} from "../../../models/Products";
+import {Product} from "../../../models/Products";
+import ProductData from "../../../widgets/ProductData";
 
-type Product = {
-    _id: string;
-    name: string;
-    description: string;
-    price : string;
-    colors: ColorsProduct[];
-    storageOptions: VariantsProduct[];
-}
 
 const Page: React.FC = () => {
     const params = useParams();
@@ -27,7 +19,7 @@ const Page: React.FC = () => {
                 }
                 const data = await response.json();
                 if (params?.productId) {
-                    const foundProduct = data.data.find((el: Product) => el._id === params.productId);
+                    const foundProduct = data.data.find((el: any) => el._id === params.productId);
                     setProduct(foundProduct || null);
                 }
             } catch (error) {
@@ -42,15 +34,7 @@ const Page: React.FC = () => {
             <div className={'mt-10'} />
             {product ? (
                 <ProductData
-                    price={product.price}
-                    key={product._id}
-                    startStorage={product.storageOptions?.[0]?.storage || ''}
-                    image={product.colors?.[0]?.imageUrl || ''}
-                    startColor={product.colors?.[0]?.colorName || ''}
-                    variants={product.storageOptions}
-                    colors={product.colors}
-                    title={product.name}
-                    params={params?.productId}
+                    productData={product}
                 />
             ) : (
                 <Progress/>

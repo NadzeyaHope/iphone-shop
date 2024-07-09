@@ -1,33 +1,69 @@
-"use client";
-import { Button, Input, Spacer, Textarea } from '@nextui-org/react';
-import { useState } from "react";
+'use client';
+import React, {useState} from 'react';
+import {onAddProduct} from "../../../lib/admin-fetch";
+import {Button, Input, Select, SelectItem, Spacer, Textarea} from "@nextui-org/react";
 import Image from "next/image";
+import {Product} from "../../../models/Products";
+import InputCreateOption from "../../../widgets/admin/InputCreateOption";
 
-const AddPhonePage: React.FC = () => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [colors, setColors] = useState([{ colorName: '', colorHex: '', imageUrl: '', price: '' }]);
-    const [storageOptions, setStorageOptions] = useState([{ storage: '', price: '' }]);
-    const [price, setPrice] = useState('');
+const categoryItem = [
+    'iPhone',
+    'MacBook',
+    'AirPods',
+    'AppleWatch',
+    'iPad'
+];
 
-    const handleAddColor = () => {
-        setColors([...colors, { colorName: '', colorHex: '', imageUrl: '', price: '' }]);
+const categoryMark = [
+    'новинка',
+    'акция',
+    'хит',
+    ''
+]
+
+const Page = () => {
+    const [productData, setProductData] = useState<Product>({
+        name: '',
+        price: '',
+        description: '',
+        category: 'iPhone',
+        colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+        storageOptions: [{storage: '', price: ''}],
+        display: [{size: '', price: ''}],
+        dimensions: [{size: '', price: ''}],
+        iPadModule: [{variant: '', price: ''}],
+        countSIM: [{variant: '', price: ''}],
+        mark: 'новинка',
+    });
+
+    const handleAddObject = (objectKey: keyof Product, newObject: Record<any, any>) => {
+        setProductData({
+            ...productData,
+            [objectKey]: [...(productData[objectKey] as any), newObject]
+        });
     };
 
-    const handleAddStorageOption = () => {
-        setStorageOptions([...storageOptions, { storage: '', price: '' }]);
+    const handleRemoveLastObject = (object: keyof Product) => {
+        if ((productData[object] as any).length > 0) {
+            setProductData({
+                ...productData,
+                [object]: (productData[object] as any).slice(0, -1)
+            });
+        }
     };
 
-    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, colorIndex: number, imageIndex: number) => {
         const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
 
             reader.onload = () => {
-                const newColors = [...colors];
-                newColors[index].imageUrl = String(reader.result);
-                setColors(newColors);
+                const newColors = [...productData.colors];
+                const newImageUrl = [...newColors[colorIndex].imageUrl];
+                newImageUrl[imageIndex] = String(reader.result);
+                newColors[colorIndex].imageUrl = newImageUrl;
+                setProductData({...productData, colors: newColors});
             };
 
             reader.onerror = () => {
@@ -36,178 +72,309 @@ const AddPhonePage: React.FC = () => {
         }
     };
 
+    const handleAddImage = (colorIndex: number) => {
+        const newColors = [...productData.colors];
+        newColors[colorIndex].imageUrl.push('');
+        setProductData({...productData, colors: newColors});
+    };
+    const handleRemoveLastImage = (colorIndex: number) => {
+        const newColors = [...productData.colors];
+        if (newColors[colorIndex].imageUrl.length > 0) {
+            newColors[colorIndex].imageUrl.pop();
+            setProductData({...productData, colors: newColors});
+        }
+    };
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const phoneData = {
-            name,
-            price,
-            description,
-            colors,
-            storageOptions
+        let filteredProductData: any = {
+            name: productData.name,
+            price: productData.price,
+            description: productData.description,
+            category: productData.category,
+            colors: productData.colors,
+            mark: productData.mark,
         };
 
-        try {
-            const response = await fetch('/api/test', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(phoneData),
-            });
+        if (productData.category === 'iPhone' || productData.category === 'iPad') {
+            filteredProductData.storageOptions = productData.storageOptions;
+        }
+        if (productData.category === 'iPhone') {
+            filteredProductData.countSIM = productData.countSIM;
+        }
+        if (productData.category === 'iPad') {
+            filteredProductData.iPadModule = productData.iPadModule;
+        }
+        if (productData.category === 'AppleWatch') {
+            filteredProductData.display = productData.display;
+            filteredProductData.dimensions = productData.dimensions;
+        }
 
-            if (response.ok) {
-                console.log('Phone data submitted successfully');
-                // Очистить форму или перенаправить пользователя
-            } else {
-                console.error('Failed to submit phone data');
+        try {
+            const request = await onAddProduct(productData, '/api/test');
+            if (request === true) {
+                setProductData({
+                    name: '',
+                    price: '',
+                    description: '',
+                    category: 'iPhone',
+                    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+                    storageOptions: [{storage: '', price: ''}],
+                    display: [{size: '', price: ''}],
+                    dimensions: [{size: '', price: ''}],
+                    iPadModule: [{variant: '', price: ''}],
+                    countSIM: [{variant: '', price: ''}],
+                    mark: 'новинка',
+                });
             }
-        } catch (error) {
-            console.error('Error:', error);
+        } catch (e: any) {
+            new Error(e.message);
         }
     };
 
     return (
         <div className="container mx-auto p-10">
-            <h1 className="text-2xl font-bold mb-4">Add new product</h1>
+            <h1 className="text-2xl font-bold mb-4">Добавить новый продукт</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <Input
                     fullWidth
-                    label="Phone Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    label="Название продукта"
+                    value={productData.name}
+                    onChange={(e) => setProductData({...productData, name: e.target.value})}
                     required
                     classNames={{
                         inputWrapper: ['bg-gray-100']
                     }}
                 />
-                <Input
+                <Select
                     fullWidth
-                    label="Min price without color and storage"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    required
+                    label="Категории"
+                    value={productData.category}
+                    className="text-3xl"
                     classNames={{
-                        inputWrapper: ['bg-gray-100']
+                        mainWrapper: ['bg-gray-100 rounded-xl'],
+                        popoverContent: ['bg-gray-100 rounded-xl'],
                     }}
-                />
+                    onChange={(e) => setProductData({...productData, category: e.target.value})}
+                    required
+                >
+                    {categoryItem.map((category, index) => (
+                        <SelectItem
+                            onClick={(e) => setProductData({...productData, category: category})}
+                            key={index} value={category}>
+                            {category}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Select
+                    fullWidth
+                    label="mark"
+                    value={productData.mark}
+                    className="text-3xl"
+                    classNames={{
+                        mainWrapper: ['bg-gray-100 rounded-xl'],
+                        popoverContent: ['bg-gray-100 rounded-xl'],
+                    }}
+                    onChange={(e) => setProductData({...productData, mark: e.target.value})}
+                    required
+                >
+                    {categoryMark.map((category, index) => (
+                        <SelectItem
+                            onClick={(e) => setProductData({...productData, mark: category})}
+                            key={index} value={category}>
+                            {category}
+                        </SelectItem>
+                    ))}
+                </Select>
                 <Textarea
                     classNames={{
                         inputWrapper: ['bg-gray-100']
                     }}
                     fullWidth
-                    label="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    label="Описание"
+                    value={productData.description}
+                    onChange={(e) => setProductData({...productData, description: e.target.value})}
                     required
                 />
-                <Spacer />
-                <h2 className="text-xl font-bold">Colors</h2>
-                {colors.map((color, index) => (
-                    <div key={index} className="space-y-2">
-                        <Input
-                            classNames={{
-                                inputWrapper: ['bg-gray-100']
-                            }}
-                            fullWidth
-                            label="Color Name"
-                            value={color.colorName}
-                            onChange={(e) => {
-                                const newColors = [...colors];
-                                newColors[index].colorName = e.target.value;
-                                setColors(newColors);
-                            }}
-                            required
+                <h2 className="text-xl font-bold">Цена</h2>
+                <Input
+                    fullWidth
+                    label="Минимальная цена"
+                    value={productData.price}
+                    onChange={(e) => setProductData({...productData, price: e.target.value})}
+                    required
+                    classNames={{
+                        inputWrapper: ['bg-gray-100']
+                    }}
+                />
+                <Spacer/>
+                <h2 className="text-xl font-bold">Цвета</h2>
+                {productData.colors.map((color: any, colorIndex: number) => (
+                    <div key={colorIndex} className="space-y-2">
+                        <InputCreateOption
+                            productData={productData}
+                            setProductData={setProductData}
+                            optionName={'colors'}
+                            optionObject={color}
+                            optionObjectKey={'colorName'}
+                            label={'Название цвета'}
+                            optionObjectIndex={colorIndex}
                         />
-                        <Input
-                            classNames={{
-                                inputWrapper: ['bg-gray-100']
-                            }}
-                            fullWidth
-                            label="Color Hex"
-                            value={color.colorHex}
-                            onChange={(e) => {
-                                const newColors = [...colors];
-                                newColors[index].colorHex = e.target.value;
-                                setColors(newColors);
-                            }}
-                            required
+                        <InputCreateOption
+                            productData={productData}
+                            setProductData={setProductData}
+                            optionName={'colors'}
+                            optionObject={color}
+                            optionObjectKey={'colorHex'}
+                            label={'Цвет Hex'}
+                            optionObjectIndex={colorIndex}
                         />
                         <Spacer/>
-                            <Input
-                                onChange={(e) => handleFileInputChange(e, index)}
-                                type={'file'}
-                                classNames={{
-                                    base : ['w-1/2'],
-                                }}
-                            />
-                            {color.imageUrl && typeof color.imageUrl === 'string' ? (
-                                <Image src={color.imageUrl} width={100} height={100} alt={'Превью изображения'} />
-                            ) : null}
+                        <InputCreateOption
+                            productData={productData}
+                            setProductData={setProductData}
+                            optionName={'colors'}
+                            optionObject={color}
+                            optionObjectKey={'price'}
+                            label={'Цена (дополнительная цена за цвет)'}
+                            optionObjectIndex={colorIndex}
+                        />
                         <Spacer/>
-                        <Input
-                            classNames={{
-                                inputWrapper: ['bg-gray-100']
-                            }}
-                            fullWidth
-                            label="Price"
-                            value={color.price}
-                            onChange={(e) => {
-                                const newColors = [...colors];
-                                newColors[index].price = e.target.value;
-                                setColors(newColors);
-                            }}
-                            required
-                        />
+                        {color.imageUrl.map((image: string, imageIndex: number) => (
+                            <div key={imageIndex} className="space-y-2">
+                                <Input
+                                    onChange={(e) => handleFileInputChange(e, colorIndex, imageIndex)}
+                                    label={`Изображение ${imageIndex + 1}`}
+                                    required
+                                    labelPlacement="inside"
+                                    type="file"
+                                    fullWidth={true}
+                                    classNames={{
+                                        inputWrapper: ['bg-gray-100'],
+                                        label: ['text-sm font-tiny w-full pl-60 pt-3 m-auto'],
+                                    }}
+                                />
+                                {image && typeof image === 'string' ? (
+                                    <Image src={image} width={100} height={100} alt="Превью изображения"/>
+                                ) : null}
+                                <Spacer/>
+                            </div>
+                        ))}
+                        <Button size={'md'} className={'mr-4'} color="secondary"
+                                onClick={() => handleAddImage(colorIndex)} type="button">
+                            добавить изображение
+                        </Button>
+                        <Button size={'md'} color="danger" onClick={() => {
+                            handleRemoveLastImage(colorIndex)
+                        }} type="button">
+                            удалить последнее
+                        </Button>
+                        <Spacer/>
                     </div>
                 ))}
-                <Spacer />
-                <Button color={'secondary'} onClick={handleAddColor} type="button">
-                    Add another color option
+                <Spacer/>
+                <hr/>
+                <Button className={'mr-4'} color="secondary" onClick={()=>{handleAddObject('colors',{colorName: '', colorHex: '', imageUrl: [''], price: ''})}} type="button">
+                    Добавить еще один цвет
                 </Button>
-                <Spacer />
-                <h2 className="text-xl font-bold">Storage Options</h2>
-                {storageOptions.map((option, index) => (
-                    <div key={index} className="space-y-2">
-                        <Input
-                            classNames={{
-                                inputWrapper: ['bg-gray-100']
-                            }}
-                            fullWidth
-                            label="Storage (GB)"
-                            value={option.storage}
-                            onChange={(e) => {
-                                const newOptions = [...storageOptions];
-                                newOptions[index].storage = e.target.value;
-                                setStorageOptions(newOptions);
-                            }}
-                            required
-                        />
-                        <Input
-                            classNames={{
-                                inputWrapper: ['bg-gray-100']
-                            }}
-                            fullWidth
-                            label="Price"
-                            value={option.price}
-                            onChange={(e) => {
-                                const newOptions = [...storageOptions];
-                                newOptions[index].price = e.target.value;
-                                setStorageOptions(newOptions);
-                            }}
-                            required
-                        />
-                    </div>
-                ))}
-                <Spacer />
-                <Button color={'secondary'} onClick={handleAddStorageOption} type="button">
-                    Add another storage option
+                <Button color="danger" onClick={() => {
+                    handleRemoveLastObject('colors')
+                }} type="button">
+                    Удалить цвет
                 </Button>
-                <Spacer />
-                <Button color={'primary'} size={'lg'} type="submit">Create</Button>
+                <Spacer/>
+                {productData.category === 'iPhone' && (
+                    <>
+                        <h2 className="text-xl font-bold">Память телефона</h2>
+                        {productData.storageOptions?.map((storage, storageIndex) => (
+                            <div key={storageIndex}>
+                                <InputCreateOption
+                                    productData={productData}
+                                    setProductData={setProductData}
+                                    optionName={'storageOptions'}
+                                    optionObject={storage}
+                                    optionObjectKey={'storage'}
+                                    optionObjectIndex={storageIndex}
+                                    label={'Память телефона'}
+                                />
+                                <Spacer y={3}/>
+                                <InputCreateOption
+                                    productData={productData}
+                                    setProductData={setProductData}
+                                    optionName={'storageOptions'}
+                                    optionObject={storage}
+                                    optionObjectKey={'price'}
+                                    optionObjectIndex={storageIndex}
+                                    label={'Цена прибавляемая к общей'}
+                                />
+                            </div>
+                        ))}
+                        <Spacer/>
+                        <hr/>
+                        <Button className={'mr-4'} color="secondary" onClick={() => {
+                            handleAddObject('storageOptions', {storage: '', price: ''})
+                        }} type="button">
+                            Добавить еще один вариант
+                        </Button>
+                        <Button color="danger" onClick={() => {
+                            handleRemoveLastObject('storageOptions')
+                        }} type="button">
+                            Удалить вариант
+                        </Button>
+                        <Spacer/>
+                        <h2 className="text-xl font-bold">Количество SIM</h2>
+                        {productData.storageOptions?.map((countSIM, countSIMIndex) => (
+                            <div key={countSIMIndex}>
+                                <InputCreateOption
+                                    productData={productData}
+                                    setProductData={setProductData}
+                                    optionName={'countSIM'}
+                                    optionObject={countSIM}
+                                    optionObjectKey={'storage'}
+                                    optionObjectIndex={countSIMIndex}
+                                    label={'Количество SIM'}
+                                />
+                                <Spacer y={3}/>
+                            </div>
+                        ))}
+                        <Spacer/>
+                        <hr/>
+                        <Button className={'mr-4'} color="secondary" onClick={() => {
+                            handleAddObject('storageOptions', {storage: '', price: ''})
+                        }} type="button">
+                            Добавить еще один вариант
+                        </Button>
+                        <Button color="danger" onClick={() => {
+                            handleRemoveLastObject('storageOptions')
+                        }} type="button">
+                            Удалить вариант
+                        </Button>
+                        <Spacer/>
+
+                    </>
+                )}
+                {productData.category === 'iPad' && (
+                    <>
+
+                    </>
+                )}
+                {productData.category === 'AppleWatch' && (
+                    <>
+
+                    </>
+                )}
+                {productData.category === 'AirPods' && (
+                    <>
+
+                    </>
+                )}
+                <Spacer/>
+                <Button color="primary" size="lg" type="submit">Создать</Button>
             </form>
         </div>
     );
 };
 
-export default AddPhonePage;
+export default Page;

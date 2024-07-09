@@ -1,0 +1,17 @@
+/* styles/slick.css */
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
+
+.slick-prev:before,
+.slick-next:before {
+    color: black;
+}
+
+.slick-dots li button:before {
+    font-size: 12px;
+    color: black;
+}
+
+.slick-dots li.slick-active button:before {
+    color: black;
+}

@@ -2,11 +2,11 @@
 import React, {useEffect, useState} from "react";
 import CardOfShopping from "./CardOfShopping";
 import Progress from "../shared/Progress";
-import {Product} from "../models/Products";
+import {Product, ProductGet} from "../models/Products";
 
 
 const CardOfProduct = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductGet[]>([]);
     const [loading, setLoading] = useState(true);
 
 
@@ -43,7 +43,7 @@ const CardOfProduct = () => {
                 <CardOfShopping
                     key={el._id}
                     id={el._id}
-                    img={el.colors[0].imageUrl}
+                    img={el.colors[0].imageUrl[0]}
                     title={el.name}
                     price={el.price}
                     mark={'new'}

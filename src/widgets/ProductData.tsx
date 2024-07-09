@@ -1,66 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Image } from '@nextui-org/react';
-import { twMerge } from 'tailwind-merge';
-import { ColorsProduct, VariantsProduct } from "../models/Products";
+import React, {useEffect, useState} from 'react';
+import {Button} from '@nextui-org/react';
+import {twMerge} from 'tailwind-merge';
+import ProductTextChoose from "../shared/ProductTextChoose";
+import {Product} from "../models/Products";
+import ChooseOptions from "./product/ChooseOptions";
+import Slider from "./Slider";
 
-interface Props {
-    params: string | string[] | undefined;
-    title: string;
-    price: string;
-    image: string;
-    colors: ColorsProduct[];
-    variants: VariantsProduct[];
-    startColor: string;
-    startStorage: string;
-    key: string;
-}
-
-const ProductData: React.FC<Props> = (props: Props) => {
-    const { params, price, key, variants, startColor, startStorage, colors, title } = props;
-    const [color, setColor] = useState(startColor);
-    const [basePrice, setBasePrice] = useState(parseFloat(price));
+const ProductData = ({productData}: { productData: Product }) => {
+    const [color, setColor] = useState(productData.colors?.[0].colorName);
+    const [basePrice, setBasePrice] = useState(parseFloat(productData.price));
     const [actualPrice, setActualPrice] = useState(basePrice);
-    const [storage, setStorage] = useState(startStorage);
-    const [image, setImage] = useState(() => {
-        const initialColor = colors.find(c => c.colorName === startColor);
-        return initialColor ? initialColor.imageUrl : '';
+    const [storage, setStorage] = useState(productData.storageOptions?.[0]?.storage);
+    const [dimensions, setDimensions] = useState(productData.dimensions?.[0]?.size);
+    const [countSim, setCountSim] = useState(productData.countSIM?.[0].variant);
+    const [display, setDisplay] = useState(productData.display?.[0]?.size);
+    const [iPadModule, setIPadModule] = useState(productData.iPadModule?.[0]?.variant);
+    const [images, setImages] = useState<string[]>(() => {
+        const initialColor = productData.colors.find(c => c.colorName === productData.colors?.[0].colorName);
+        return initialColor ? initialColor.imageUrl : [];
     });
 
+    const [orderData, setOrderData] = useState({
+        color : productData.colors?.[0].colorName,
+        basePrice : parseFloat(productData.price),
+        storage : productData.storageOptions?.[0]?.storage,
+        dimensions : productData.dimensions?.[0]?.size,
+        countSim : productData.countSIM?.[0].variant,
+        display : productData.display?.[0]?.size,
+        iPadModule : productData.iPadModule?.[0]?.variant,
+    })
+
     useEffect(() => {
-        const selectedColor = colors.find(c => c.colorName === color);
-        const selectedStorage = variants.find(v => v.storage === storage);
+        const selectedColor = productData.colors.find(c => c.colorName === color);
+        const selectedStorage = productData.storageOptions?.find(v => v.storage === storage);
+        const selectCountSIm = productData.countSIM?.find(v => v.variant === countSim);
         const colorPrice = selectedColor ? parseFloat(selectedColor.price) : 0;
         const storagePrice = selectedStorage ? parseFloat(selectedStorage.price) : 0;
-        setActualPrice(basePrice + colorPrice + storagePrice);
-    }, [color, storage, basePrice, colors, variants]);
+        const countSimPrice = selectCountSIm ? parseFloat(selectCountSIm.price) : 0;
+        setActualPrice(basePrice + colorPrice + storagePrice + countSimPrice);
+    }, [color, storage, basePrice, productData.colors, productData.countSIM, productData.storageOptions]);
 
     const onSetColor = (colorName: string) => {
-        setColor(colorName);
-        const selectedColor = colors.find(c => c.colorName === colorName);
+        setOrderData({...orderData, color : colorName});
+        const selectedColor = productData.colors.find(c => c.colorName === colorName);
         if (selectedColor) {
-            setImage(selectedColor.imageUrl);
+            setImages(selectedColor.imageUrl);
         }
     };
 
-    const onChooseStorage = (variant: VariantsProduct) => {
-        setStorage(variant.storage);
-    };
-
     return (
-        <div key={key} className={'block md:mb-96 md:flex relative'}>
-            <div className={'block w-full md:w-1/2 '}>
-                <h2 className={'font-semibold text-center'}>{title}</h2>
-                <div className={'mt-12'}/>
-                <div className={'w-52 m-auto h-[300px] md:w-[400px] md:h-[400px]'}>
-                    <Image isZoomed={true} src={image} alt="Product Image" width={500} height={500}/>
+        <div className="block md:mb-96 md:flex relative">
+            <div className="block w-full md:w-1/2 ">
+                <h2 className="font-semibold text-center">{productData.name}</h2>
+                <div className="mt-12"/>
+                <div className="w-52 m-auto h-[300px] md:w-[400px] md:h-[400px]">
+                    <Slider images={images}/>
                 </div>
             </div>
-            <div className={'mt-10'}/>
-            <div className={'space-y-10'}>
-                <div className={'mt-12 text-center'}>
-                    <div className={'flex justify-center'}>Color - {color}</div>
-                    <div className={'mt-3'}/>
-                    {colors.map((el, i) => (
+            <div className="mt-10"/>
+            <div className="space-y-2">
+                <div className="mt-12 text-center">
+                    <ProductTextChoose>Color - {orderData.color}</ProductTextChoose>
+                    {productData.colors.map((el, i) => (
                         <button
                             key={i}
                             onClick={() => onSetColor(el.colorName)}
@@ -71,28 +72,29 @@ const ProductData: React.FC<Props> = (props: Props) => {
                             )}
                         ></button>
                     ))}
-                    <div className={'mt-3'}/>
-                    <div className={'flex gap-4 justify-center'}>
-                        {variants.map((el, i) => (
-                            <Button
-                                key={i}
-                                onClick={() => onChooseStorage(el)}
-                                className={twMerge(
-                                    'font-semibold rounded-full border-opacity-70 border-2 border-[#5C5C5C]',
-                                    el.storage === storage && 'border-2 border-red-900'
-                                )}
-                            >
-                                <p>{el.storage} GB</p>
-                                <p className={'text-xs m-auto ml-3 font-semibold text-opacity-70 text-content1'}>$ {el.price}</p>
-                            </Button>
-                        ))}
-                    </div>
                 </div>
-                <div className={'bg-[#333333] flex-col space-y-3 text-center text-default p-3 rounded-3xl w-full md:h-[200px] md:w-[393px] '}>
-                    <p className={'text-lg font-bold'}>$ {actualPrice.toFixed(2)}</p>
-                    <p className={'text-tiny font-thin text-opacity-70'}>10 month interest-free installments</p>
-                    <p className={'text-tiny items-center flex gap-2 justify-center font-normal'}>free delivery</p>
-                    <Button className={'text-content1 font-semibold text-lg px-7 py-4 h-10'}>Buy now</Button>
+                <ChooseOptions
+                    objectOptions={productData?.storageOptions}
+                    labelOptions={'Choose Storage'}
+                    onChooseOptions={setStorage}
+                    optionsKey={"storage"}
+                    activeOptions={storage}
+                    labelKey={'storage'}
+                />
+                <ChooseOptions
+                    objectOptions={productData?.countSIM}
+                    labelOptions={'Choose count SIM'}
+                    onChooseOptions={setCountSim}
+                    optionsKey={"countSIM"}
+                    activeOptions={countSim}
+                    labelKey={'variant'}
+                />
+                <div
+                    className="bg-[#333333] flex-col space-y-3 text-center text-default p-3 rounded-3xl w-full md:h-[200px] md:w-[393px] ">
+                    <p className="text-lg font-bold">$ {actualPrice.toFixed(2)}</p>
+                    <p className="text-tiny font-thin text-opacity-70">10 month interest-free installments</p>
+                    <p className="text-tiny items-center flex gap-2 justify-center font-normal">free delivery</p>
+                    <Button className="text-content1 font-semibold text-lg px-7 py-4 h-10">Buy now</Button>
                 </div>
             </div>
         </div>
