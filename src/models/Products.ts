@@ -56,5 +56,36 @@ type Product = {
     colors: ProductColor[],
 }
 
+
 export type ProductCreate = IPadProduct | IPhoneProduct | AppleWatch
 
+export const defaultIPhoneProduct: IPhoneProduct = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'iPhone',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    storageOptions: [{variant: '', price: ''}],
+    countSIM: [{variant: '', price: ''}],
+};
+
+export const defaultIPadProduct: IPadProduct = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'iPad',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    storageOptions: [],
+    iPadModule: [],
+    countSIM: [],
+};
+
+export const defaultAppleWatch: AppleWatch = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'AppleWatch',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    dimensions: [],
+    display: [],
+};

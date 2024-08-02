@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Progress from "../../../shared/Progress";
-import {Product} from "../../../models/Products";
 import ProductData from "../../../widgets/ProductData";
+import {ProductCreate} from "../../../models/Products";
 
 
 const Page: React.FC = () => {
     const params = useParams();
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<ProductCreate | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {

@@ -50,7 +50,6 @@ const Sidebar = () => {
     const handleSwitchToEn = () => handleSwitchLang('en')
 
     const {data} = useSession()
-    console.log(data?.user)
 
     return (
         <>

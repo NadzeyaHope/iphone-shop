@@ -34,7 +34,6 @@ const InputCreateOption: React.FC<Props> = (props) => {
     return (
         <Input
             classNames={{
-                base: ['mb-3'],
                 inputWrapper: ['bg-gray-100']
             }}
             fullWidth
