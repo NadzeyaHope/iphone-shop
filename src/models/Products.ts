@@ -9,18 +9,12 @@ export interface Storage {
     variant : string;
     price : string;
 }
-
-export interface Display {
+export interface RAM {
     variant : string;
     price : string;
 }
 
-export interface Dimensions {
-    variant : string;
-    price : string;
-}
-
-export interface IPadModule {
+export interface SSD {
     variant : string;
     price : string;
 }
@@ -37,17 +31,15 @@ export interface IPhoneProduct extends Product {
 
 export interface IPadProduct extends Product  {
     storageOptions: Storage[];
-    iPadModule: IPadModule[];
     countSIM: countSIM[];
 }
-export interface AppleWatch extends Product  {
-    dimensions : Dimensions[];
-    display : Display[];
+export interface MacProduct extends Product  {
+    SSD : SSD[];
+    RAM : RAM[];
 }
 
 
-
-type Product = {
+export type Product = {
     name: string;
     price: string;
     description: string;
@@ -57,7 +49,7 @@ type Product = {
 }
 
 
-export type ProductCreate = IPadProduct | IPhoneProduct | AppleWatch
+export type ProductCreate = IPadProduct | IPhoneProduct  | MacProduct | Product;
 
 export const defaultIPhoneProduct: IPhoneProduct = {
     name: '',
@@ -75,17 +67,30 @@ export const defaultIPadProduct: IPadProduct = {
     description: '',
     category: 'iPad',
     colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-    storageOptions: [],
-    iPadModule: [],
-    countSIM: [],
+    storageOptions: [{variant: '', price: ''}],
+    countSIM: [{variant: '', price: ''}],
 };
 
-export const defaultAppleWatch: AppleWatch = {
+export const defaultMacProduct: MacProduct = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'Mac',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    SSD: [{variant: '', price: ''}],
+    RAM: [{variant: '', price : ''}],
+};
+export const defaultAppleWatch: Product = {
     name: '',
     price: '',
     description: '',
     category: 'AppleWatch',
     colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-    dimensions: [],
-    display: [],
+};
+export const defaultHeadphones: Product = {
+    name: '',
+    price: '',
+    description: '',
+    category: 'Headphones',
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
 };

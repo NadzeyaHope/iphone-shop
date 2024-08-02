@@ -1,6 +1,13 @@
 import React, {useEffect} from 'react';
 import OptionList from "./CreateProduct/OptionList";
-import {defaultIPadProduct, IPadProduct, IPhoneProduct, MacProduct, Product} from "../../models/Products";
+import {
+    defaultAppleWatch,
+    defaultMacProduct,
+    IPadProduct,
+    IPhoneProduct,
+    MacProduct,
+    Product
+} from "../../models/Products";
 import {Spacer} from "@nextui-org/react";
 
 interface Props {
@@ -8,21 +15,23 @@ interface Props {
     setFormData: (formData: IPadProduct | IPhoneProduct | MacProduct | Product) => void;
 }
 
-const IPadFormData = (props: Props) => {
+const MacFormData = (props: Props) => {
     const {formData, setFormData} = props;
+    // Handle setting default form data outside the render phase
     useEffect(() => {
         setFormData({
-            ...defaultIPadProduct// assuming defaultAppleWatch contains other default values
+            ...defaultMacProduct // assuming defaultAppleWatch contains other default values
         });
     }, []);
+
     return (
         <div>
             <Spacer y={4}/>
             <OptionList
                 formData={formData}
                 setFormData={setFormData}
-                optionName='storageOptions'
-                optionLabel='Память ipad'
+                optionName='SSD'
+                optionLabel='SSD'
                 optionObjectKey='variant'
             />
             <Spacer y={4}/>
@@ -31,12 +40,12 @@ const IPadFormData = (props: Props) => {
             <OptionList
                 formData={formData}
                 setFormData={setFormData}
-                optionName='countSIM'
-                optionLabel='SIM/wi-fi only'
+                optionName='RAM'
+                optionLabel='RAM'
                 optionObjectKey='variant'
             />
             <Spacer y={4}/>
         </div>
     );
 };
-export default IPadFormData;
+export default MacFormData;

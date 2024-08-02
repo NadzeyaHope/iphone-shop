@@ -1,19 +1,19 @@
 import React from 'react';
 import InputCreateOption from "../InputCreateOption";
-import {IPadProduct, IPhoneProduct, ProductCreate} from "../../../models/Products";
-import { Button, Spacer } from "@nextui-org/react";
-import { handleAddObject, handleRemoveLastObject } from "../../../lib/createProduct";
+import {IPadProduct, IPhoneProduct, MacProduct, Product, ProductCreate} from "../../../models/Products";
+import {Button, Spacer} from "@nextui-org/react";
+import {handleAddObject, handleRemoveLastObject} from "../../../lib/createProduct";
 
 interface Props {
-    formData: IPadProduct | IPhoneProduct ;
+    formData: ProductCreate;
     setFormData: (arg: any) => void;
-    optionName: keyof IPadProduct | keyof IPhoneProduct ;
+    optionName: keyof IPadProduct | keyof IPhoneProduct | keyof MacProduct | keyof Product;
     optionLabel: string;
     optionObjectKey: string;
 }
 
 const OptionList = (props: Props) => {
-    const { formData, setFormData, optionName, optionLabel, optionObjectKey } = props;
+    const {formData, setFormData, optionName, optionLabel, optionObjectKey} = props;
 
     const options = (formData as any)[optionName];
 
@@ -25,7 +25,7 @@ const OptionList = (props: Props) => {
         <>
             <h2 className="text-xl font-bold">{optionLabel}</h2>
             <Spacer y={4}/>
-            {options.map((option : any, index : number) => (
+            {options.map((option: any, index: number) => (
                 <div className={'space-y-4'} key={index}>
                     <InputCreateOption
                         productData={formData}
@@ -53,7 +53,10 @@ const OptionList = (props: Props) => {
                 className={'mr-4'}
                 color="secondary"
                 onClick={() => {
-                    handleAddObject(setFormData, formData, optionName as keyof ProductCreate, { [optionObjectKey]: '', price: '' });
+                    handleAddObject(setFormData, formData, optionName as keyof ProductCreate, {
+                        [optionObjectKey]: '',
+                        price: ''
+                    });
                 }}
                 type="button"
             >
@@ -68,7 +71,7 @@ const OptionList = (props: Props) => {
             >
                 Удалить вариант
             </Button>
-            <Spacer />
+            <Spacer/>
         </>
     );
 };

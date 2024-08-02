@@ -9,6 +9,9 @@ interface Props {
 export enum  ProductCategory{
     phones = 'phones',
     ipad = 'ipad',
+    mac  = 'mac',
+    watch  = 'watch',
+    headphones = 'headphones'
 }
 
 const SelectOption = (props: Props) => {
@@ -21,7 +24,8 @@ const SelectOption = (props: Props) => {
             classNames={{
                 label: ['m-auto text-gray-400'],
                 mainWrapper: ['bg-gray-100 rounded-xl'],
-                popoverContent: ['bg-gray-100 rounded-xl'],
+                popoverContent: ['bg-gray-100 text-gray-400 rounded-xl'],
+                 base: ['text-zinc-600']
             }}
         >
             {Object.values(ProductCategory).map(category => (
