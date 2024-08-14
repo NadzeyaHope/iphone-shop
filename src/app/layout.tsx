@@ -2,7 +2,6 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/system";
-import {ThemeProvider as NextThemesProvider} from "next-themes";
 import {Container} from "../shared/Container";
 import Dropdown from "../widgets/Dropdown";
 import Footer from "../widgets/Footer/Footer";
@@ -29,18 +28,16 @@ const RootLayout = ({children}: RootLayoutProps) => {
         <body className={inter.className}>
         <NextUIProvider>
             <NextAuthProvider>
-                <NextThemesProvider attribute="class" defaultTheme={'light'}>
-                    <Container>
-                        <Sidebar/>
-                        {children}
-                        <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
-                            <Dropdown/>
-                        </div>
-                        <div className={'h-20 md:h-32'}></div>
-                    </Container>
-                    <Footer/>
-                    <FooterPrivicy/>
-                </NextThemesProvider>
+                <Container>
+                    <Sidebar/>
+                    {children}
+                    <div className={'flex w-full pr-4 items-center sm:hidden fixed z-10 bottom-0'}>
+                        <Dropdown/>
+                    </div>
+                    <div className={'h-20 md:h-32'}></div>
+                </Container>
+                <Footer/>
+                <FooterPrivicy/>
             </NextAuthProvider>
         </NextUIProvider>
         </body>

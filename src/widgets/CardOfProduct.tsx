@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from "react";
 import CardOfShopping from "./CardOfShopping";
 import Progress from "../shared/Progress";
-import {Product, ProductGet} from "../models/Products";
+import {ProductGet} from "../models/Products";
 
 
 const CardOfProduct = () => {

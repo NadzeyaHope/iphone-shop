@@ -40,7 +40,9 @@ const CardFeatured = (props: Props) => {
                 <div
                     className="flex m-auto gap-3 pr-2 ">
                     <h4 className="text-content1 font-semibold text-tiny md:text-lg">USD$ {price},00</h4>
-                    <div className={'m-auto'} ><LoveIcon/></div>
+                    <div className={'m-auto'} ><LoveIcon
+                        red={true}
+                    /></div>
                 </div>
             </div>
         </Card>

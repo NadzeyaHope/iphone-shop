@@ -4,8 +4,8 @@ const BuyIconBlack = () => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="17"
-            height="17"
+            width="24"
+            height="24"
             version="1"
             viewBox="0 0 512 512"
         >

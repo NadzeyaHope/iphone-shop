@@ -1,11 +1,11 @@
 import React from 'react';
 import ProductTextChoose from "../../shared/ProductTextChoose";
-import {Button} from "@nextui-org/react";
+import {Button, Spacer} from "@nextui-org/react";
 import {twMerge} from "tailwind-merge";
-import {ProductOptions} from "../../models/Products";
+import {ProductCreate} from "../../models/Products";
 
 interface Props {
-    objectOptions : ProductOptions[] | undefined | any[];
+    objectOptions : ProductCreate[] | undefined | any[];
     labelOptions : string;
     onChooseOptions : (el : any)=>void;
     optionsKey : any;
@@ -17,6 +17,7 @@ const ChooseOptions = (props : Props) => {
     const {objectOptions,labelKey, activeOptions,labelOptions,onChooseOptions,optionsKey} = props;
     return (
         <div >
+            <Spacer y={4} />
             {
                 objectOptions && objectOptions.length > 0 && <>
                     <ProductTextChoose>{labelOptions}</ProductTextChoose>
