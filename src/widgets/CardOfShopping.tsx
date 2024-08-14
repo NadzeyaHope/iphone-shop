@@ -1,5 +1,5 @@
 'use client';
-import React, {Key, useState} from 'react';
+import React, {Key, useEffect, useState} from 'react';
 import {Button, Card, CardFooter, CardHeader, Image} from "@nextui-org/react";
 import LoveIcon from "../../public/dropdown/LoveIcon";
 import {useRouter} from "next/navigation";
@@ -10,7 +10,7 @@ interface Props {
     id: string;
     title: string;
     img: string;
-    price: string;
+    price: number;
     mark?: string;
 }
 
@@ -34,13 +34,7 @@ const CardOfShopping = (props: Props) => {
         router.push(`/product/${selectedKey}`);
     };
 
-    const onLoveIconClick = (event: any) => () => {
-        event.stopPropagation()
-        console.log("Love icon clicked");
-        // Дополнительная логика для LoveIcon
-    };
 
-    console.log(data?.user.role)
 
     return (
         <Card
@@ -66,9 +60,8 @@ const CardOfShopping = (props: Props) => {
                 <Image
                     removeWrapper
                     alt="Card example background"
-                    className="z-0 m-auto pt-10 pb-5 scale-125 -translate-y-6 object-cover"
+                    className={'w-full h-full'}
                     src={img}
-                    width={250}
                 />
             </div>
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 ">
@@ -77,11 +70,11 @@ const CardOfShopping = (props: Props) => {
                         <h4 className="text-content1 text-lg">{title}</h4>
                         <p className={'text-tiny'}>$ {price}, 00</p>
                     </div>
-                    <Button
-                        isIconOnly
-                        onPress={(event) => {
-                        onLoveIconClick(event)
-                    }}><LoveIcon/></Button>
+                    <Button isIconOnly>
+                        <LoveIcon
+                            red={false}
+                        />
+                    </Button>
                 </div>
             </CardFooter>
         </Card>

@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'next/navigation';
 import Progress from "../../../shared/Progress";
 import ProductData from "../../../widgets/ProductData";
-import {ProductCreate} from "../../../models/Products";
+import {ProductGet} from "../../../models/Products";
 
 
 const Page: React.FC = () => {
     const params = useParams();
-    const [product, setProduct] = useState<ProductCreate | null>(null);
+    const [product, setProduct] = useState<ProductGet | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -31,7 +31,7 @@ const Page: React.FC = () => {
 
     return (
         <div>
-            <div className={'mt-10'} />
+            <div className={'mt-10'}/>
             {product ? (
                 <ProductData
                     productData={product}

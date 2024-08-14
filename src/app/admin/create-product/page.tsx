@@ -10,6 +10,8 @@ import IPadFormData from "../../../widgets/admin/IPadFormData";
 import MacFormData from "../../../widgets/admin/MacFormData";
 import AppleWatchFormData from "../../../widgets/admin/AppleWatchFormData";
 import HeadphonesFormData from "../../../widgets/admin/HeadphonesFormData";
+import Progress from "../../../shared/Progress";
+import Error from "next/error";
 
 const categoryMark = [
     'новинка',
@@ -22,7 +24,6 @@ const Page = () => {
     const [formData, setFormData] = useState<IPadProduct | IPhoneProduct | MacProduct | Product>(defaultIPhoneProduct);
     const [categorySelect, setCategorySelect] = useState(ProductCategory.phones);
 
-    console.log(formData);
 
     useEffect(() => {
         switch (categorySelect) {
@@ -84,7 +85,9 @@ const Page = () => {
         <div className="container space-y-4 mx-auto p-10">
             <form
                 onSubmit={(e) => {
-                    handleSubmitCreateProduct(e, formData)
+                    const request = handleSubmitCreateProduct(e, formData)
+                    setFormData(defaultIPhoneProduct)
+                    request ?? <Progress/>
                 }}
                 className={'space-y-4'}
             >
@@ -114,8 +117,8 @@ const Page = () => {
                 <Input
                     fullWidth
                     label="Минимальная цена"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    value={String(formData?.price)}
+                    onChange={(e) => setFormData({ ...formData, price: Number(e.target.value)})}
                     required
                     classNames={{
                         inputWrapper: ['bg-gray-100']

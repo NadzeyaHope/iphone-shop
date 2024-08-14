@@ -20,6 +20,9 @@ import ModalFormSignUp from "./auth/ModalFormSignUp";
 import {useSession} from "next-auth/react";
 import ModalFormLogin from "./auth/ModalFormLogin";
 import {signOut} from "next-auth/react";
+import LoveIcon from "../../public/dropdown/LoveIcon";
+import BuyIconBlack from "../../public/smallIcons/BuyIconBlack";
+import BuyIcon from "../../public/smallIcons/BuyIcon";
 
 const menuItems = [
     "Profile",
@@ -76,60 +79,47 @@ const Sidebar = () => {
                             {translations[lang].sidebar.menu_home}
                         </Link>
                     </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#" aria-current="page">
-                            {translations[lang].sidebar.menu_catalog}
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            {translations[lang].sidebar.menu_contact}
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            {translations[lang].sidebar.menu_about}
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="/profile">
-                            Personal
-                        </Link>
-                    </NavbarItem>
                     <NavbarItem>
                         <Link color="foreground" href="/admin/create-product">
                             Admin
                         </Link>
                     </NavbarItem>
                 </NavbarContent>
-                <NavbarContent justify="end">
-                    {!data ?
-                        <>
-                            <NavbarItem className="hidden lg:flex">
-                                <Button onPress={onOpenLogin} className={'text-primary text-medium'}>
-                                    {translations[lang].sidebar.login}
-                                </Button>
-                            </NavbarItem>
-                            <NavbarItem className={'hidden lg:flex'}>
-                                <Button onPress={onOpenSignUp} color="primary" href="#" variant="flat">
-                                    {translations[lang].sidebar.Sign_up}
-                                </Button>
-                            </NavbarItem>
-                        </>
-                        :
-                        <Button onClick={async ()=>{await signOut()}} className={'hidden lg:flex'} color={"primary"} variant={'flat'}>Log out</Button>}
-                    <NavbarItem className={'border-1 rounded-xl px-2 py-1.5 border-primary'}>
-                        <button
-                            onClick={handleSwitchToRu}
-                            style={lang === 'ru' ? {color: '#6ee7b7'} : {color: '#d1d5db'}}>RU
-                        </button>
-                        <button
-                            onClick={handleSwitchToEn}
-                            className={'ml-2'}
-                            style={lang === 'en' ? {color: '#6ee7b7'} : {color: '#d1d5db'}}>EN
-                        </button>
+                <NavbarContent justify={'end'} >
+                    <NavbarItem >
+                        <Link href={'/added-products'}>
+                            <BuyIconBlack/>
+                        </Link>
                     </NavbarItem>
                 </NavbarContent>
+                {/*<NavbarContent justify="end">*/}
+                {/*    {data ?*/}
+                {/*        <>*/}
+                {/*            <NavbarItem className="hidden lg:flex">*/}
+                {/*                <Button onPress={onOpenLogin} className={'text-primary text-medium'}>*/}
+                {/*                    {translations[lang].sidebar.login}*/}
+                {/*                </Button>*/}
+                {/*            </NavbarItem>*/}
+                {/*            <NavbarItem className={'hidden lg:flex'}>*/}
+                {/*                <Button onPress={onOpenSignUp} color="primary" href="#" variant="flat">*/}
+                {/*                    {translations[lang].sidebar.Sign_up}*/}
+                {/*                </Button>*/}
+                {/*            </NavbarItem>*/}
+                {/*        </>*/}
+                {/*        :*/}
+                {/*        <Button onClick={async ()=>{await signOut()}} className={'hidden lg:flex'} color={"primary"} variant={'flat'}>Log out</Button>}*/}
+                {/*    <NavbarItem className={'border-1 rounded-xl px-2 py-1.5 border-primary'}>*/}
+                {/*        <button*/}
+                {/*            onClick={handleSwitchToRu}*/}
+                {/*            style={lang === 'ru' ? {color: '#6ee7b7'} : {color: '#d1d5db'}}>RU*/}
+                {/*        </button>*/}
+                {/*        <button*/}
+                {/*            onClick={handleSwitchToEn}*/}
+                {/*            className={'ml-2'}*/}
+                {/*            style={lang === 'en' ? {color: '#6ee7b7'} : {color: '#d1d5db'}}>EN*/}
+                {/*        </button>*/}
+                {/*    </NavbarItem>*/}
+                {/*</NavbarContent>*/}
                 <NavbarMenu>
                     <NavbarMenuItem key={'profile'}>
                         <Link color={'danger'} className="w-full" href="#" size="lg">Log out</Link>

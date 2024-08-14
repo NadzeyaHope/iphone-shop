@@ -1,27 +1,29 @@
+import storageOption from "../widgets/admin/CreateProduct/StorageOption";
+
 export interface ProductColor {
     colorName: string;
     colorHex : string;
     imageUrl : string[];
-    price: string;
+    price: number;
 }
 
 export interface Storage {
     variant : string;
-    price : string;
+    price : number;
 }
 export interface RAM {
     variant : string;
-    price : string;
+    price : number;
 }
 
 export interface SSD {
     variant : string;
-    price : string;
+    price : number;
 }
 
 export interface countSIM {
     variant : string;
-    price : string;
+    price : number;
 }
 
 export interface IPhoneProduct extends Product {
@@ -41,7 +43,7 @@ export interface MacProduct extends Product  {
 
 export type Product = {
     name: string;
-    price: string;
+    price: number;
     description: string;
     mark? : string;
     category: string;
@@ -53,44 +55,56 @@ export type ProductCreate = IPadProduct | IPhoneProduct  | MacProduct | Product;
 
 export const defaultIPhoneProduct: IPhoneProduct = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     category: 'iPhone',
-    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-    storageOptions: [{variant: '', price: ''}],
-    countSIM: [{variant: '', price: ''}],
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: 0}],
+    storageOptions: [{variant: '', price: 0}],
+    countSIM: [{variant: '', price: 0}],
 };
 
 export const defaultIPadProduct: IPadProduct = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     category: 'iPad',
-    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-    storageOptions: [{variant: '', price: ''}],
-    countSIM: [{variant: '', price: ''}],
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: 0}],
+    storageOptions: [{variant: '', price: 0}],
+    countSIM: [{variant: '', price: 0}],
 };
 
 export const defaultMacProduct: MacProduct = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     category: 'Mac',
-    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
-    SSD: [{variant: '', price: ''}],
-    RAM: [{variant: '', price : ''}],
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: 0}],
+    SSD: [{variant: '', price: 0}],
+    RAM: [{variant: '', price : 0}],
 };
 export const defaultAppleWatch: Product = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     category: 'AppleWatch',
-    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: 0}],
 };
 export const defaultHeadphones: Product = {
     name: '',
-    price: '',
+    price: 0,
     description: '',
     category: 'Headphones',
-    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: ''}],
+    colors: [{colorName: '', colorHex: '', imageUrl: [''], price: 0}],
 };
+export interface ProductGet  {
+    _id: string;
+    name : string;
+    price : number;
+    description: string,
+    category: string;
+    colors : ProductColor[];
+    SSD?: SSD[],
+    RAM?: RAM[],
+    storageOptions?: Storage[],
+    countSIM?: countSIM[],
+}
