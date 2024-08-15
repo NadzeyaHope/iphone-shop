@@ -23,6 +23,7 @@ import {signOut} from "next-auth/react";
 import LoveIcon from "../../public/dropdown/LoveIcon";
 import BuyIconBlack from "../../public/smallIcons/BuyIconBlack";
 import BuyIcon from "../../public/smallIcons/BuyIcon";
+import LoveIconNavbar from "../../public/dropdown/LoveIconNavbar";
 
 const menuItems = [
     "Profile",
@@ -89,6 +90,11 @@ const Sidebar = () => {
                     <NavbarItem >
                         <Link href={'/added-products'}>
                             <BuyIconBlack/>
+                        </Link>
+                    </NavbarItem>
+                    <NavbarItem >
+                        <Link href={'/featured-products'}>
+                            <LoveIconNavbar/>
                         </Link>
                     </NavbarItem>
                 </NavbarContent>

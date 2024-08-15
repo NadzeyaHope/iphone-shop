@@ -8,9 +8,20 @@ import {ProductGet} from "../models/Products";
 const CardOfProduct = () => {
     const [products, setProducts] = useState<ProductGet[]>([]);
     const [loading, setLoading] = useState(true);
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+
+
 
 
     useEffect(() => {
+        const favoriteIds = localStorage.getItem('favorite');
+
+        if(favoriteIds){
+            setFavorites(JSON.parse(favoriteIds))
+        }
+
+
         fetch('http://localhost:3000/api/test')
             .then(response => {
                 if (!response.ok) {
@@ -47,6 +58,7 @@ const CardOfProduct = () => {
                     title={el.name}
                     price={el.price}
                     mark={'new'}
+                    isRed={favorites.includes(el._id)}
                 />
             ))}
         </div>

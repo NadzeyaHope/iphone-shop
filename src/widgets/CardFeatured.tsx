@@ -1,49 +1,58 @@
-import React from 'react';
-import {Button, Card, CardFooter, CardHeader, Image} from "@nextui-org/react";
-import OkIcon from "../../public/smallIcons/OkIcon";
-import TrashIcon from "../../public/smallIcons/TrashIcon";
-import PencilIcon from "../../public/smallIcons/PencilIcon";
+import React, {useState} from 'react';
+import {Button, Card, Image} from "@nextui-org/react";
 import LoveIcon from "../../public/dropdown/LoveIcon";
+import {ProductColor} from "../models/Products";
 
 interface Props {
-    img: string;
     title: string;
     price: number;
-    variants: string;
-    color: Record<string, string>
+    color: ProductColor[];
+    id: string;
+    isRed : boolean;
 }
 
 
 const CardFeatured = (props: Props) => {
-    const {img, price, variants, color, title} = props;
+    const {price, id,isRed: initialIsRed, color, title} = props;
+    const [isRed, setIsRed] = useState<boolean>(initialIsRed || false);  // Local state to manage favorite status
+    const toggleFavorite = () => {
+        let favoriteIds = localStorage.getItem('favorite');
+        let favoritesArray = favoriteIds ? JSON.parse(favoriteIds) : [];
+
+        if (favoritesArray.includes(id)) {
+            // If the id is already in favorites, remove it
+            favoritesArray = favoritesArray.filter((favId: string) => favId !== id);
+            setIsRed(false);  // Update the state
+        } else {
+            // If the id is not in favorites, add it
+            favoritesArray.push(id);
+            setIsRed(true);  // Update the state
+        }
+
+        // Update localStorage with the new favorites array
+        localStorage.setItem('favorite', JSON.stringify(favoritesArray));
+    };
+
+
     return (
-        <Card className="bg-default m-auto w-full md:w-[450px]">
-            <div className={'flex'} >
-                <Image
-                    removeWrapper
-                    alt="Card example background"
-                    className="py-6"
-                    src={img}
-                    width={100}
-                />
-                <div className={'m-auto border-r-2 border-opacity-10 border-content1 pr-3 md:pr-10'} >
-                    <div className={'text-medium md:text-lg font-semibold'} >{title}</div>
-                    <div className={'flex m-auto text-opacity-30 gap-2'}>
-                        <div className={'text-gray-400'}>{variants}</div>
-                        |
-                        <div
-                            style={{backgroundColor: color.hex}}
-                            className={'w-5 m-auto ml-1 border-2 rounded-full h-5'}
-                        ></div>
-                    </div>
+        <Card className="bg-default m-auto h-32 w-full p-4">
+            <div className={'flex h-full items-center justify-between '}>
+                <div className={'w-32'}>
+                    <Image
+                        className={'m-auto'}
+                        removeWrapper
+                        width={80}
+                        alt="Card example background"
+                        src={color?.[0]?.imageUrl[0] || ''}
+                    />
                 </div>
-                <div
-                    className="flex m-auto gap-3 pr-2 ">
-                    <h4 className="text-content1 font-semibold text-tiny md:text-lg">USD$ {price},00</h4>
-                    <div className={'m-auto'} ><LoveIcon
-                        red={true}
-                    /></div>
-                </div>
+                <div className={'w-0.5 bg-opacity-20 bg-black h-full'}/>
+                <div className={'text-medium w-60 md:text-lg font-semibold'}>{title}</div>
+                <div style={{backgroundColor: color?.[0]?.colorHex || '#ffffff'}}
+                     className={'w-5 border-2 rounded-full h-5'}></div>
+                <div className={'w-0.5 bg-opacity-20 bg-black h-full'}/>
+                <h4 className="text-content1 font-semibold text-tiny md:text-lg">USD$ {price}</h4>
+                <Button onClick={toggleFavorite} isIconOnly><LoveIcon red={isRed}/></Button>
             </div>
         </Card>
     );

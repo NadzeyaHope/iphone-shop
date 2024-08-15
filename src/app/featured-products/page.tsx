@@ -1,56 +1,59 @@
-import React from 'react';
-import CardAdded from "../../widgets/CardAdded";
-import CardOfShopping from "../../widgets/CardOfShopping";
+'use client';
+import React, {useEffect, useState} from 'react';
 import CardFeatured from "../../widgets/CardFeatured";
+import {ProductCreate, ProductGet} from "../../models/Products";
+import Progress from "../../shared/Progress";
 
-const item = [
-    {
-        img : '/products/iphone15.jpg',
-        title : 'IPhone 15 Pro',
-        price : 699,
-        variants : '64 GB',
-        color : {name : "Black", hex : "#000000"},
-    },
-    {
-        img : '/products/iphone15.jpg',
-        title : 'IPhone 15 Pro',
-        price : 699,
-        variants : '64 GB',
-        color : {name : "Black", hex : "#000000"},
-    },
-    {
-        img : '/products/iphone15.jpg',
-        title : 'IPhone 15 Pro',
-        price : 699,
-        variants : '64 GB',
-        color : {name : "Black", hex : "#000000"},
-    },
-    {
-        img : '/products/iphone15.jpg',
-        title : 'IPhone 15 Pro',
-        price : 699,
-        variants : '64 GB',
-        color : {name : "Black", hex : "#000000"},
-    },
-]
 
 const Page = () => {
+    const [favoriteItems, setFavoriteItems] = useState<ProductGet[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+
+    useEffect(() => {
+        const favoriteIds = localStorage.getItem('favorite');
+
+        if(favoriteIds){
+            setFavorites(JSON.parse(favoriteIds))
+        }
+
+        fetch('http://localhost:3000/api/test')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(product => {
+                setFavoriteItems(product.data)
+                setLoading(false);
+            })
+            .catch(error => {
+                setLoading(false);
+            });
+    }, []);
+    const filteredFavoriteItems = favoriteItems.filter(item => favorites.includes(item._id));
+
+
     return (
         <div className={'justify-center'}>
-            <div className={'mt-10'} />
-            <div
-                className="grid justify-center gap-y-6 grid-cols-1 ">
-                {item.map((el, index) => (
-                    <CardFeatured
-                        key={index}
-                        color={el.color}
-                        variants={el.variants}
-                        title={el.title}
-                        img={el.img}
-                        price={el.price}
-                    />
-                ))}
-            </div>
+            <div className={'mt-10'}/>
+            {loading ? <Progress/> :
+                <div
+                    className="space-y-5 md:px-64">
+                    {filteredFavoriteItems.map((el, index) => (
+                        <CardFeatured
+                            isRed={favorites.includes(el._id)}
+                            id={el._id}
+                            key={index}
+                            color={el.colors}
+                            price={el.price}
+                            title={el.name}
+                        />
+                    ))}
+                </div>
+            }
         </div>
     )
 };
